@@ -4,12 +4,12 @@ import asyncio
 import aiohttp
 import json
 import datetime
+import traceback
+import logging
 from discord import Game
 from discord.ext.commands import Bot
-from Python.BGG import getRating
-from Python.BGG import getDescription
-from Python.BGG import getGameRank
-from Python.BGG import getPublishers
+from Python.BGG import getRating, getDescription, getGameRank, getCategories, getNumberOfPlayers, game_lookup
+
 
 Bot_Prefix = ("?","!")
 TOKEN = 'NTUyNTEwMjkzNzA0NzA0MDAy.D2AlXA.6c9dXthL89p4tnCbV40G1_elbCo'
@@ -38,24 +38,7 @@ async def eight_ball(context):
                 aliases=['bggck','bgscore','bg']
                 )    
 async def BGGCheck(gamename):
-    # async with aiohttp.ClientSession() as session:  # Async HTTP request
-        
-        
-        # raw_response = await session.get(url)
-        # response = await raw_response.text()
-        # response = json.loads(response)
-        gameNameString = str(gamename)
-        boardgame_rating = getRating(gameNameString)
-        boardgame_description = getDescription(gameNameString)
-        boardgame_rank = getGameRank(gameNameString)
-        publishers = getPublishers(gameNameString)
-        publisher_string = ""
-        for p in publishers:
-            publisher_string +=  p +" "
-
-        
-
-        main_response = "Game Rating " + str(gamename) + " is: " +  boardgame_rating + "\nBoardGameGeek Rank: " + boardgame_rank+ "\nPublishers: " + publisher_string  + "\n\n" + boardgame_description
+        main_response = game_lookup(gamename)
         await client.say(main_response)   
 
 
@@ -86,7 +69,6 @@ async def bitcoin():
         response = await raw_response.text()
         response = json.loads(response)
         await client.say("Bitcoin price is: $" + response['bpi']['USD']['rate'])
-
 
 async def list_servers():
     await client.wait_until_ready()

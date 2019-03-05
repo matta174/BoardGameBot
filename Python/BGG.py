@@ -2,24 +2,13 @@ import boardgamegeek
 
 bgg = boardgamegeek.BGGClient()
 
-def getRating(string):
-    game = bgg.game(string)
-    returned_string = str(game.rating_average)
-    return (returned_string)
 
-
-def getDescription(string):
+def game_lookup(string):
     game = bgg.game(string)
-    returned_string = str(game.description.strip()[0:1000] +"...")
-    return (returned_string)   
-
-def getGameRank(string):
-    game = bgg.game(string)
-    returned_string = str(game.boardgame_rank)
-    return (returned_string)
-
-def getPublishers(string):
-    game = bgg.game(string)
-    return (game.publishers)
-# game = bgg.game("Android: Netrunner")
-# print(game.boardgame_rank)
+    rating = str(game.rating_average)
+    description = str(game.description.strip()[0:1000] +"...")
+    gamerank = str(game.boardgame_rank)
+    categories = game.categories
+    number_of_players = str(game.min_players) + "-" + str(game.max_players)
+    categories_list = ', '.join(categories)
+    return ("Game Rating for " + str(string) + " is: " +  rating + "\nBoardGameGeek Rank: " + gamerank +"\nNumber of players: " + number_of_players + "\nCategories: " + categories_list  + "\n\nDescription: " + description)
