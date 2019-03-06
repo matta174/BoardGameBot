@@ -7,15 +7,15 @@ import datetime
 import traceback
 import logging
 import pprint
+from threading import Timer
 from discord import Game
 from discord.ext.commands import Bot
 from Python.BGG import game_lookup
-from Python.DataStorage import getData
+from Python.DataStorage import getData, getStartTime, setStartTime, getEndTime
 
 
 Bot_Prefix = ("?","!")
 TOKEN = 'NTUyNTEwMjkzNzA0NzA0MDAy.D2AlXA.6c9dXthL89p4tnCbV40G1_elbCo'
-
 
 client = Bot(command_prefix=Bot_Prefix)
 
@@ -54,6 +54,21 @@ async def random_game(ctx, *, arg):
     await client.say(random.choice(possible_responses))   
 
 
+@client.command(name='Playtime_Timer',
+                description="Sets the start of a play time timer",
+                brief="Times playtime of a game",
+                aliases=['starttimer','timerstart','st'],
+                pass_context = True
+                ) 
+async def Playtime_Timer():
+    setStartTime()
+    await client.say("Started the timer at: " + str(datetime.datetime.now()))
+
+@client.command()
+async def end_time():
+   end_time = getEndTime()
+   await client.say(end_time)
+
 @client.command()
 async def schedule(date):
     timenow = datetime.datetime.now()
@@ -87,6 +102,6 @@ async def list_servers():
         for server in client.servers:
             print(server.name)
         await asyncio.sleep(600)
-pprint.pprint(getData())
+
 client.loop.create_task(list_servers())
 client.run(TOKEN)
