@@ -10,5 +10,6 @@ def game_lookup(string):
     gamerank = str(game.boardgame_rank)
     categories = game.categories
     number_of_players = str(game.min_players) + "-" + str(game.max_players)
+    weight = str(game.rating_average_weight)
     categories_list = ', '.join(categories)
-    return ("Game Rating for " + str(string) + " is: " +  rating + "\nBoardGameGeek Rank: " + gamerank +"\nNumber of players: " + number_of_players + "\nCategories: " + categories_list  + "\n\nDescription: " + description)
+    return ("Game Rating for " + str(string) + " is: " +  rating + "\nBoardGameGeek Rank: " + gamerank +"\nNumber of players: " + number_of_players + "\nCategories: " + categories_list  + "\nComplexity Rank: " + weight + '/5' + "\n\nDescription: " + description)

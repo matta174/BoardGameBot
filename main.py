@@ -6,9 +6,11 @@ import json
 import datetime
 import traceback
 import logging
+import pprint
 from discord import Game
 from discord.ext.commands import Bot
 from Python.BGG import game_lookup
+from Python.DataStorage import getData
 
 
 Bot_Prefix = ("?","!")
@@ -85,6 +87,6 @@ async def list_servers():
         for server in client.servers:
             print(server.name)
         await asyncio.sleep(600)
-
+pprint.pprint(getData())
 client.loop.create_task(list_servers())
 client.run(TOKEN)
