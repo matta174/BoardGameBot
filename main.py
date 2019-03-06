@@ -8,7 +8,7 @@ import traceback
 import logging
 from discord import Game
 from discord.ext.commands import Bot
-from Python.BGG import getRating, getDescription, getGameRank, getCategories, getNumberOfPlayers, game_lookup
+from Python.BGG import game_lookup
 
 
 Bot_Prefix = ("?","!")
@@ -35,13 +35,21 @@ async def eight_ball(context):
 @client.command(name='BGGCheck',
                 description="Returns the BGG information on a game",
                 brief="From the world of board gaming",
-                aliases=['bggck','bgscore','bg']
+                aliases=['bggck','bglookup','bg']
                 )    
 async def BGGCheck(gamename):
-        main_response = game_lookup(gamename)
-        await client.say(main_response)   
+    main_response = game_lookup(gamename)
+    await client.say(main_response)   
 
-
+@client.command(name='Random_Game',
+                description="Returns a random game title from a provided list",
+                brief="From the world of board gaming",
+                aliases=['randompick','randbg','rbg'],
+                pass_context = True
+                )    
+async def random_game(ctx, *, arg):
+    possible_responses = arg.split(',')
+    await client.say(random.choice(possible_responses))   
 
 
 @client.command()
