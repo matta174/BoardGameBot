@@ -1,4 +1,7 @@
 {
-    "name": "Matthew",
-    "Id" : "0"
+
+    "users": [
+        {"name": "Matthew", "score": 0},
+        {"name": "Josh", "score": 0}
+    ]
 }

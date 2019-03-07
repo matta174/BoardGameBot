@@ -62,12 +62,16 @@ async def random_game(ctx, *, arg):
                 ) 
 async def Playtime_Timer():
     setStartTime()
-    await client.say("Started the timer at: " + str(datetime.datetime.now()))
+    await client.say("Started the timer at: " + str(datetime.datetime.now().strftime("%m/%d/%Y, %H:%M:%S")))
 
-@client.command()
+@client.command(name='End_Time',
+                description="Checks the elapsed time since the start of the timer",
+                brief="Stops the timer",
+                aliases=['endtimer','end_time','et'],
+                pass_context = True)
 async def end_time():
    end_time = getEndTime()
-   await client.say(end_time)
+   await client.say("Total play time: " + end_time)
 
 @client.command()
 async def schedule(date):
@@ -94,6 +98,7 @@ async def bitcoin():
         response = await raw_response.text()
         response = json.loads(response)
         await client.say("Bitcoin price is: $" + response['bpi']['USD']['rate'])
+      
 
 async def list_servers():
     await client.wait_until_ready()

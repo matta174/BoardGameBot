@@ -26,5 +26,5 @@ def getEndTime():
     string_date = data["start time"]
     formatted_datetime_object = datetime.datetime.strptime(string_date,'%Y-%m-%dT%H:%M:%S.%f')
     elapsed_time = datetime.datetime.now() - formatted_datetime_object 
-    stringtime = str(elapsed_time)
-    return str(stringtime)
+    
+    return str(elapsed_time)
