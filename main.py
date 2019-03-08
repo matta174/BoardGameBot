@@ -12,7 +12,8 @@ from discord import Game
 from discord.ext.commands import Bot
 from Python.BGG import game_lookup
 from Python.YouTube import how_to_play
-from Python.DataStorage import getScore, getStartTime, setStartTime, getEndTime, addPoint, addUser
+from Python.DataStorage import getScore, getStartTime, setStartTime,\
+     getEndTime, addPoint, addUser
 
 
 Bot_Prefix = ("?", "!")
@@ -34,7 +35,9 @@ async def eight_ball(context):
         'It is quite possible',
         'Definitely',
     ]
-    await client.say(random.choice(possible_responses) + ", " + context.message.author.mention)
+    await client.say(
+        random.choice(possible_responses) +
+        ", " + context.message.author.mention)
 
 
 @client.command(name='BGGCheck',
@@ -66,11 +69,14 @@ async def random_game(ctx, *, arg):
                 )
 async def Playtime_Timer():
     setStartTime()
-    await client.say("Started the timer at: " + str(datetime.datetime.now().strftime("%m/%d/%Y, %H:%M:%S")))
+    await client.say(
+        "Started the timer at: " +
+        str(datetime.datetime.now().strftime("%m/%d/%Y, %H:%M:%S")))
 
 
 @client.command(name='End_Time',
-                description="Checks the elapsed time since the start of the timer",
+                description="Checks the elapsed time since the start of the \
+                    timer",
                 brief="Stops the timer",
                 aliases=['endtimer', 'end_time', 'et'],
                 pass_context=True)
@@ -98,11 +104,13 @@ async def add_point(user):
     addPoint(user)
     await client.say("Added point to " + user)
 
+
 @client.command(name='HowToPlay',
-                    description="Returns the top search result video from YouTube on how to play",
-                    brief="How to play video",
-                    aliases=['htp', 'how', 'video']
-                    )
+                description="Returns the top search result video from YouTube \
+                    on how to play",
+                brief="How to play video",
+                aliases=['htp', 'how', 'video']
+                )
 async def youtube_how_to(gamename):
     main_response = how_to_play(gamename)
     await client.say(main_response)
@@ -113,14 +121,15 @@ async def schedule(date):
     timenow = datetime.datetime.now()
     await client.say(str(timenow))
 
+
 @client.command(name='Add_user',
                 description="Adds a user",
                 brief="Creates a user with 0 points",
-                aliases=['addus','add_user','au'],
+                aliases=['addus', 'add_user', 'au'],
                 )
 async def add_user(name):
-   addUser(name)
-   await client.say("Added " + name)     
+    addUser(name)
+    await client.say("Added " + name)
 
 
 @client.event
