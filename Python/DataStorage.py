@@ -2,6 +2,19 @@ import json
 import datetime
 import time
 
+def addUser(name):
+    with open("data\\users.json","r+") as json_file:
+        data = json.load(json_file)
+        new_user = {'name': name,
+                    'score': 0
+                    }
+        data['users'].append(new_user)
+        json_file.seek(0)
+        json.dump(data,json_file,indent=4)
+        json_file.truncate()
+
+
+
 def getScore():
     jsonFile = open("data\\users.json","r+")
     data = json.load(jsonFile)
