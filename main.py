@@ -7,10 +7,12 @@ import datetime
 import traceback
 import logging
 import pprint
+import xml.etree.ElementTree
+import requests
 from threading import Timer
 from discord import Game
 from discord.ext.commands import Bot
-from Python.BGG import game_lookup
+from Python.BGG import game_lookup, user_lookup
 from Python.YouTube import how_to_play
 from Python.DataStorage import getScore, getStartTime, setStartTime,\
      getEndTime, addPoint, addUser
@@ -132,6 +134,15 @@ async def add_user(name):
     await client.say("Added " + name)
 
 
+@client.command(name='Lookup_BGG_User',
+                description='Lookup BGG user',
+                brief="lookup bgg user",
+                aliases=['gamesowned', 'lookup-games', 'go'])
+async def lookup_bgg_user(name):
+    response = user_lookup(name)
+    await client.say("Games that " + name + " owns: \n" + response)
+
+
 @client.event
 async def on_ready():
     await client.change_presence(game=Game(name="with humans"))
@@ -145,6 +156,7 @@ async def list_servers():
         for server in client.servers:
             print(server.name)
         await asyncio.sleep(600)
+
 
 client.loop.create_task(list_servers())
 client.run(TOKEN)
