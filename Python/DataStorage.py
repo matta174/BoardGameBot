@@ -2,10 +2,27 @@ import json
 import datetime
 import time
 
-def getData():
+def getScore():
     jsonFile = open("data\\users.json","r+")
     data = json.load(jsonFile)
+    output_string = "\n"
+    for d in data['users']:
+        output_string += d['name'] +': '+ str(d['score']) + '\n'
+    return output_string
+
+def addPoint(key):
+    with open("data\\users.json","r+") as json_file:
+        data = json.load(json_file)
+        for d in data['users']:
+            if key in d['name']: 
+                test = d['score']
+                test = test + 1
+                d['score'] = test
+        json_file.seek(0)
+        json.dump(data,json_file,indent=4)
+        json_file.truncate()
     return data
+
 
 def getStartTime():
     jsonFile = open("data\\playtime.json","r+")

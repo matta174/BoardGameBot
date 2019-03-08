@@ -11,7 +11,7 @@ from threading import Timer
 from discord import Game
 from discord.ext.commands import Bot
 from Python.BGG import game_lookup
-from Python.DataStorage import getData, getStartTime, setStartTime, getEndTime
+from Python.DataStorage import getScore, getStartTime, setStartTime, getEndTime, addPoint
 
 
 Bot_Prefix = ("?","!")
@@ -64,6 +64,7 @@ async def Playtime_Timer():
     setStartTime()
     await client.say("Started the timer at: " + str(datetime.datetime.now().strftime("%m/%d/%Y, %H:%M:%S")))
 
+
 @client.command(name='End_Time',
                 description="Checks the elapsed time since the start of the timer",
                 brief="Stops the timer",
@@ -72,6 +73,26 @@ async def Playtime_Timer():
 async def end_time():
    end_time = getEndTime()
    await client.say("Total play time: " + end_time)
+
+
+@client.command(name='Check_Score',
+                description="Checks the user's score",
+                brief="Checks user's scores",
+                aliases=['chksc','check_score','cs'],
+                pass_context = True)
+async def check_score():
+   scores = getScore()
+   await client.say("Total wins per user: " + str(scores))
+
+
+@client.command(name='Add_Point',
+                description="Adds a point to the user's score",
+                brief="Checks user's scores",
+                aliases=['addpt','add_point','ap'],
+                )
+async def add_point(user):
+   addPoint(user)
+   await client.say("Added point to " + user)   
 
 @client.command()
 async def schedule(date):
