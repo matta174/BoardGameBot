@@ -1,5 +1,4 @@
 gunicorn==19.7.1
-cython==3.0.0
+aiohttp==3.5.4
 git+https://github.com/Rapptz/discord.py.git
-git+https://github.com/aio-libs/aiohttp.git
 git+https://github.com/lcosmin/boardgamegeek.git
