@@ -143,10 +143,10 @@ async def lookup_bgg_user(name):
     await client.say("Games that " + name + " owns: \n" + response)
 
 
-@client.event
-async def on_ready():
-    await client.change_presence(game=Game(name="with humans"))
-    print("Logged in as " + client.user.name)
+# @client.event
+# async def on_ready():
+#     await client.change_presence(game=Game(name="with humans"))
+#     print("Logged in as " + client.user.name)
 
 
 async def list_servers():
