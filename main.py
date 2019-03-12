@@ -111,8 +111,7 @@ async def add_point(user):
                 description="Returns the top search result video from YouTube \
                     on how to play",
                 brief="How to play video",
-                aliases=['htp', 'how', 'video'],
-                pass_context=False
+                aliases=['htp', 'how', 'video']
                 )
 async def youtube_how_to(gamename):
     main_response = how_to_play(gamename)
@@ -144,10 +143,10 @@ async def lookup_bgg_user(name):
     await client.say("Games that " + name + " owns: \n" + response)
 
 
-# @client.event
-# async def on_ready():
-#     await client.change_presence(game=Game(name="with humans"))
-#     print("Logged in as " + client.user.name)
+@client.event
+async def on_ready():
+    await client.change_presence(game=Game(name="with humans"))
+    print("Logged in as " + client.user.name)
 
 
 async def list_servers():
