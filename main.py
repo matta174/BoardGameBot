@@ -111,7 +111,8 @@ async def add_point(user):
                 description="Returns the top search result video from YouTube \
                     on how to play",
                 brief="How to play video",
-                aliases=['htp', 'how', 'video']
+                aliases=['htp', 'how', 'video'],
+                pass_context=False
                 )
 async def youtube_how_to(gamename):
     main_response = how_to_play(gamename)
