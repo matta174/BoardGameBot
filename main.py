@@ -44,7 +44,7 @@ async def eight_ball(context):
 
 @client.command(name='BGGCheck',
                 description="Returns the BGG information on a game",
-                brief="From the world of board gaming",
+                brief="Returns the Board Game Geek information of a game",
                 aliases=['bggck', 'bglookup', 'bg']
                 )
 async def BGGCheck(gamename):
@@ -54,7 +54,7 @@ async def BGGCheck(gamename):
 
 @client.command(name='Random_Game',
                 description="Returns a random game title from a provided list",
-                brief="From the world of board gaming",
+                brief="Returns a random title from a provided list of games",
                 aliases=['randompick', 'randbg', 'rbg'],
                 pass_context=True
                 )
@@ -99,7 +99,7 @@ async def check_score():
 
 @client.command(name='Add_Point',
                 description="Adds a point to the user's score",
-                brief="Checks user's scores",
+                brief="Adds a point to the user's score",
                 aliases=['addpt', 'add_point', 'ap'],
                 )
 async def add_point(user):
