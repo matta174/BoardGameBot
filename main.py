@@ -12,7 +12,7 @@ import requests
 from threading import Timer
 from discord import Game
 from discord.ext.commands import Bot
-from Python.BGG import game_lookup, user_lookup
+from Python.BGG import game_lookup, user_lookup, random_owned_game
 from Python.YouTube import how_to_play
 from Python.DataStorage import getScore, getStartTime, setStartTime,\
      getEndTime, addPoint, addUser
@@ -141,6 +141,18 @@ async def add_user(name):
 async def lookup_bgg_user(name):
     response = user_lookup(name)
     await client.say("Games that " + name + " owns: \n" + response)
+
+
+@client.command(name='Random_Owned_Game',
+                description="Returns a random game title from a user's owned \
+                    list",
+                brief="Returns a random title from a user's owned list of \
+                    games",
+                aliases=['randomownedpick', 'randobg', 'robg']
+                )
+async def random_game(name):
+    random_game_name = random_owned_game(name)
+    await client.say(random_game_name)
 
 
 @client.event

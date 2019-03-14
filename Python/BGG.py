@@ -1,4 +1,5 @@
 import boardgamegeek
+import random
 
 bgg = boardgamegeek.BGGClient()
 
@@ -26,3 +27,14 @@ def user_lookup(name):
         if item.owned:
             games_string = games_string + item.name + '\n'
     return(games_string)
+
+
+def random_owned_game(name):
+    user = bgg.collection(name)
+    games_string = ""
+    games_list = []
+    for item in user.items:
+        if item.owned:
+            games_list.append(item.name)
+    random_game = random.choice(games_list)
+    return(random_game)
