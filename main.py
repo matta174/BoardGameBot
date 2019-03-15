@@ -1,7 +1,6 @@
 # Work with Python 3.6
 import asyncio
 import random
-import aiohttp
 import json
 import datetime
 import traceback
@@ -132,6 +131,7 @@ async def lookup_bgg_user(name):
                     games",
                 aliases=['randomownedpick', 'randobg', 'robg']
                 )
+                
 async def random_game(name):
     random_game_name = random_owned_game(name)
     await client.say(random_game_name)
