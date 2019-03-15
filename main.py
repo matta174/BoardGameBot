@@ -1,5 +1,4 @@
 # Work with Python 3.6
-import random
 import asyncio
 import aiohttp
 import json
@@ -22,24 +21,6 @@ Bot_Prefix = ("?", "!")
 TOKEN = 'NTUyNTEwMjkzNzA0NzA0MDAy.D2AlXA.6c9dXthL89p4tnCbV40G1_elbCo'
 
 client = Bot(command_prefix=Bot_Prefix)
-
-
-@client.command(name='8ball',
-                description="Answers a yes/no question.",
-                brief="Answers from the beyond.",
-                aliases=['eight_ball', 'eightball', '8-ball'],
-                pass_context=True)
-async def eight_ball(context):
-    possible_responses = [
-        'That is a resounding no',
-        'It is not looking likely',
-        'Too hard to tell',
-        'It is quite possible',
-        'Definitely',
-    ]
-    await client.say(
-        random.choice(possible_responses) +
-        ", " + context.message.author.mention)
 
 
 @client.command(name='BGGCheck',
