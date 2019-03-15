@@ -29,7 +29,7 @@ Google APIs Client Library for Python - [link](https://developers.google.com/api
 
 * Go to this url https://discordapp.com/oauth2/authorize?client_id=XXXXXXXXXXXX&scope=bot and replace the client id with your app's client ID and authorize your app
 
-*replace the token in main.py with your token and run
+* replace the token in main.py with your token and run
 
 
 
