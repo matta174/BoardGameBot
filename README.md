@@ -42,4 +42,5 @@ Google APIs Client Library for Python - [link](https://developers.google.com/api
 | HowToPlay | Returns the top search result video from YouTube on how to play |    `!htp *game name*` |
 | Lookup_BGG_User| Lookup a board game geek user's game collection  | `!go *username*` |
 |Random_Owned_Game |Returns a random game title from a user's owned list | `!robg *username*`|
+| Game_Ambiance | Returns the top search result video for selected topic from YouTube | `!amb *topic*` |
 

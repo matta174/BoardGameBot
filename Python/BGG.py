@@ -31,7 +31,6 @@ def user_lookup(name):
 
 def random_owned_game(name):
     user = bgg.collection(name)
-    games_string = ""
     games_list = []
     for item in user.items:
         if item.owned:
