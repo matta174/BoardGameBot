@@ -8,6 +8,7 @@ import logging
 import pprint
 import xml.etree.ElementTree
 import requests
+import time
 from threading import Timer
 from discord import Game
 from discord.ext.commands import Bot
@@ -143,6 +144,21 @@ async def random_owned_game(name):
 async def game_ambiance_playlist(topic):
     main_response = game_ambiance(topic)
     await client.say("Here's the result for "+ topic + " ambiance \n" + main_response)
+
+@client.command(pass_context=True)
+async def reminder(self, ctx,  quantity : int, time_unit : str, *, text : str):
+    self.units = {"minute" : 60, "hour" : 3600, "day" : 86400, "week": 604800, "month": 2592000}
+    time_unit = time_unit[:-1]
+    s = "s"
+    if not time_unit in self.units:
+        await self.bot.say('Invalid time unit. Choose minutes/hours/days/weeks/month')
+        return
+    if quantity < 1:
+        await self.bot.say("Quantity must not be 0 or negative")
+        return
+    if len(text) > 1960:
+        await self.bot.say("Text is too long.")
+        return
 
 @client.event
 async def on_ready():
