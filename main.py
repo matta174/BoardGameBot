@@ -136,8 +136,7 @@ async def game_ambiance_playlist(topic):
      
 @client.command(name='docker',
                 description="Test for docker automation",
-                brief="Test for docker automation",
-                aliases=['docker']
+                brief="Test for docker automation"
                 )                
 async def test_docker():
     await client.say("Congrats! Docker automatically deployed changes.")
