@@ -1,11 +1,7 @@
-FROM python:3.6
-
-ADD main.py /
-
-RUN pip install discord
-
-RUN pip install boardgamegeek2
-
-RUN pip install google-api-python-client
+FROM python:3.6-alpine
+COPY requirements.txt /
+RUN pip install -r /requirements.txt
+COPY . /app
+WORKDIR /app
 
 CMD [ "python", "./main.py" ]
