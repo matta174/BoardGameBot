@@ -139,7 +139,7 @@ async def game_ambiance_playlist(topic):
                 brief="Test for docker automation"
                 )                
 async def test_docker():
-    await client.say("Congrats! Docker automatically deployed changes.")
+    await client.say("Congrats! Docker automatically deployed changes, for real this time!")
 
 @client.event
 async def on_ready():
