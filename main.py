@@ -125,18 +125,6 @@ async def lookup_bgg_user(name):
     response = user_lookup(name)
     await client.say("Games that " + name + " owns: \n" + response)
 
-
-@client.command(name='Random_Owned_Game',
-                description="Returns a random game title from a user's owned \
-                    list",
-                brief="Returns a random title from a user's owned list of \
-                    games",
-                aliases=['randomownedpick', 'randobg', 'robg']
-                )                
-async def random_owned_game(name):
-    random_game_name = random_owned_game(name)
-    await client.say(random_game_name)
-
 @client.command(name='Game_Ambiance',
                 description="Returns the top search result video from YouTube",
                 brief="Ambiance video",
@@ -145,6 +133,14 @@ async def random_owned_game(name):
 async def game_ambiance_playlist(topic):
     main_response = game_ambiance(topic)
     await client.say("Here's the result for "+ topic + " ambiance \n" + main_response)
+     
+@client.command(name='docker',
+                description="Test for docker automation",
+                brief="Test for docker automation",
+                aliases=['docker']
+                )                
+async def test_docker():
+    await client.say("Congrats! Docker automatically deployed changes.")
 
 @client.event
 async def on_ready():
