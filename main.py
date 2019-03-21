@@ -14,14 +14,13 @@ from threading import Timer
 from discord import Game
 from discord.ext.commands import Bot
 from Python.BGG import game_lookup, user_lookup, random_owned_game
-from keys import TOKEN
 from Python.YouTube import how_to_play, game_ambiance
 from Python.DataStorage import getScore, getStartTime, setStartTime,\
      getEndTime, addPoint, addUser
 
 
 Bot_Prefix = ("?", "!")
-TOKEN = TOKEN
+TOKEN = 'NTU4MDAyOTQxMDc2NzAxMTk0.D3RnBg.FS146ftSIJcPNX36YwOKIudFzTc'
 
 client = Bot(command_prefix=Bot_Prefix)
 

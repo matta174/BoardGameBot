@@ -1,7 +1,6 @@
 from googleapiclient.discovery import build
-from keys import DEVELOPER_KEY
 
-DEVELOPER_KEY = DEVELOPER_KEY
+DEVELOPER_KEY = 'AIzaSyDw2yQyKRU8a-POk2WkeCR3ROxggPpHggw'
 YOUTUBE_BASE_VIDEO_URL = 'https://www.youtube.com/watch?v='
 
 
