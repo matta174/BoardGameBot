@@ -47,6 +47,18 @@ async def random_game(ctx, *, arg):
     await client.say(random.choice(possible_responses))
 
 
+@client.command(name='Random_Owned_Game',	
+                description="Returns a random game title from a user's owned \
+                    list",	
+                brief="Returns a random title from a user's owned list of \
+                    games",	
+                aliases=['randomownedpick', 'randobg', 'robg']	
+                )
+async def random_users_game(name):	
+    random_game_name = random_owned_game(name)	
+    await client.say(random_game_name)    
+
+
 @client.command(name='Playtime_Timer',
                 description="Sets the start of a play time timer",
                 brief="Times playtime of a game",
