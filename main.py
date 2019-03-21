@@ -20,7 +20,7 @@ from Python.DataStorage import getScore, getStartTime, setStartTime,\
 
 
 Bot_Prefix = ("?", "!")
-TOKEN = 'NTU4MDAyOTQxMDc2NzAxMTk0.D3RnBg.FS146ftSIJcPNX36YwOKIudFzTc'
+TOKEN = 'NTUyNTEwMjkzNzA0NzA0MDAy.D2AlXA.6c9dXthL89p4tnCbV40G1_elbCo'
 
 client = Bot(command_prefix=Bot_Prefix)
 
