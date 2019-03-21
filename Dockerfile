@@ -1,6 +1,6 @@
-FROM python:3
+FROM python:3.6-alpine
 
-ADD main.py /
+ADD . /
 
 RUN pip install discord
 
