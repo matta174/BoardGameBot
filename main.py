@@ -20,9 +20,9 @@ from Python.DataStorage import getScore, getStartTime, setStartTime,\
      getEndTime, addPoint, addUser
 
 Bot_Prefix = ("?", "!")
-TOKEN = ''
 
 is_docker = os.environ.get('DOCKER_CONTAINER', False)
+print('token :' + os.environ.get('PROD_TOKEN'))
 
 if is_docker:
     TOKEN = os.environ.get('PROD_TOKEN')
@@ -32,8 +32,6 @@ else:
         TOKEN = json_keys['keys']['Dev']['token']
 
 client = Bot(command_prefix=Bot_Prefix)
-
-print('token: ' + TOKEN)
 
 @client.command(name='BGGCheck',
                 description="Returns the BGG information on a game",
