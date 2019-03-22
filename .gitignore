@@ -105,4 +105,6 @@ venv.bak/
 
 #vscode
 .vscode/
-keys.py
+
+#API Keys
+keys.json
