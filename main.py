@@ -9,6 +9,7 @@ import pprint
 import xml.etree.ElementTree
 import requests
 import time
+import os
 
 from threading import Timer
 from discord import Game
@@ -18,9 +19,16 @@ from Python.YouTube import how_to_play, game_ambiance
 from Python.DataStorage import getScore, getStartTime, setStartTime,\
      getEndTime, addPoint, addUser
 
-
 Bot_Prefix = ("?", "!")
-TOKEN = 'NTUyNTEwMjkzNzA0NzA0MDAy.D2AlXA.6c9dXthL89p4tnCbV40G1_elbCo'
+
+is_docker = os.environ.get('DOCKER_CONTAINER', False)
+
+if is_docker:
+    TOKEN = os.environ.get('PROD_TOKEN')
+else:
+    with open('keys.json') as json_file:
+        json_keys = json.load(json_file)
+        TOKEN = json_keys['keys']['Dev']['token']
 
 client = Bot(command_prefix=Bot_Prefix)
 
@@ -46,16 +54,16 @@ async def random_game(ctx, *, arg):
     await client.say(random.choice(possible_responses))
 
 
-@client.command(name='Random_Owned_Game',	
+@client.command(name='Random_Owned_Game',
                 description="Returns a random game title from a user's owned \
-                    list",	
+                    list",
                 brief="Returns a random title from a user's owned list of \
-                    games",	
-                aliases=['randomownedpick', 'randobg', 'robg']	
+                    games",
+                aliases=['randomownedpick', 'randobg', 'robg']
                 )
-async def random_users_game(name):	
-    random_game_name = random_owned_game(name)	
-    await client.say(random_game_name)    
+async def random_users_game(name):
+    random_game_name = random_owned_game(name)
+    await client.say(random_game_name)
 
 
 @client.command(name='Playtime_Timer',
@@ -113,6 +121,7 @@ async def youtube_how_to(gamename):
     main_response = how_to_play(gamename)
     await client.say(main_response)
 
+
 @client.command()
 async def schedule(date):
     timenow = datetime.datetime.now()
@@ -137,6 +146,7 @@ async def lookup_bgg_user(name):
     response = user_lookup(name)
     await client.say("Games that " + name + " owns: \n" + response)
 
+
 @client.command(name='Game_Ambiance',
                 description="Returns the top search result video from YouTube",
                 brief="Ambiance video",
@@ -144,14 +154,9 @@ async def lookup_bgg_user(name):
                 )
 async def game_ambiance_playlist(topic):
     main_response = game_ambiance(topic)
-    await client.say("Here's the result for "+ topic + " ambiance \n" + main_response)
-     
-@client.command(name='docker',
-                description="Test for docker automation",
-                brief="Test for docker automation"
-                )                
-async def test_docker():
-    await client.say("Congrats! Docker automatically deployed changes, for real this time!")
+    await client.say("Here's the result for " + topic +
+                     " ambiance \n" + main_response)
+
 
 @client.event
 async def on_ready():
