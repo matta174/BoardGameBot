@@ -32,6 +32,7 @@ else:
 
 client = Bot(command_prefix=Bot_Prefix)
 
+print('token: ' + TOKEN)
 
 @client.command(name='BGGCheck',
                 description="Returns the BGG information on a game",
