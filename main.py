@@ -20,6 +20,7 @@ from Python.DataStorage import getScore, getStartTime, setStartTime,\
      getEndTime, addPoint, addUser
 
 Bot_Prefix = ("?", "!")
+TOKEN = ''
 
 is_docker = os.environ.get('DOCKER_CONTAINER', False)
 
