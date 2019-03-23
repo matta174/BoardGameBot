@@ -13,7 +13,7 @@ import os
 
 from threading import Timer
 from discord import Game
-from discord.ext.commands import Bot
+from discord.ext.commands import Bot, CommandNotFound
 from Python.BGG import game_lookup, user_lookup, random_owned_game
 from Python.YouTube import how_to_play, game_ambiance
 from Python.DataStorage import getScore, getStartTime, setStartTime,\
@@ -163,6 +163,18 @@ async def on_ready():
     await client.change_presence(game=Game(name="with humans"))
     print("Logged in as " + client.user.name)
 
+
+@client.event
+async def on_command_error(error, ctx):
+    if isinstance(error, CommandNotFound):
+        return await client.send_message(ctx.message.channel,
+                                         '\"' + ctx.invoked_with + '\"'
+                                         ' is not a valid ' +
+                                         ' command. Please try again.' +
+                                         ' Use !help <command name> to get ' +
+                                         'more info on how to use a ' +
+                                         'specific command.')
+    raise error
 
 async def list_servers():
     await client.wait_until_ready()
