@@ -2,16 +2,14 @@ FROM python:3.6-alpine
 
 ENV DOCKER_CONTAINER Yes
 
-ADD . /
+COPY requirements.txt .
 
-RUN pip install discord
+RUN \
+ apk add --no-cache postgresql-libs && \
+ apk add --no-cache --virtual .build-deps gcc musl-dev postgresql-dev && \
+ python3 -m pip install -r requirements.txt --no-cache-dir && \
+ apk --purge del .build-deps
 
-RUN pip install boardgamegeek2
-
-RUN pip install google-api-python-client
-
-RUN pip install python-dotenv
-
-RUN pip install psycopg2
+COPY . .
 
 CMD [ "python", "./main.py" ]
