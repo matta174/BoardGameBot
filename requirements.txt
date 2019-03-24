@@ -1,5 +1,5 @@
 discord.py==0.16.12
 boardgamegeek2==1.0.1
 google-api-python-client==1.7.8
-python-env==0.10.1
+python-dotenv==0.10.1
 psycopg2==2.7.7
