@@ -10,6 +10,8 @@ RUN pip install boardgamegeek2
 
 RUN pip install google-api-python-client
 
-RUN pip install python-dotenv 
+RUN pip install python-dotenv
+
+RUN pip install psycopg2
 
 CMD [ "python", "./main.py" ]
