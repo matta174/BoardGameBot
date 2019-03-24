@@ -21,6 +21,8 @@ Google APIs Client Library for Python - [link](https://developers.google.com/api
 
 >pip install python-env
 
+>pip install psycopg2
+
 ### Using the bot
 
 * Create a new Discord Application [here](https://discordapp.com/developers/applications/) 
