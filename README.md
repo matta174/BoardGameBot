@@ -19,6 +19,7 @@ Google APIs Client Library for Python - [link](https://developers.google.com/api
 
 >pip install google-api-python-client
 
+>pip install python-env
 
 ### Using the bot
 
