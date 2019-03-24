@@ -18,17 +18,10 @@ from Python.BGG import game_lookup, user_lookup, random_owned_game
 from Python.YouTube import how_to_play, game_ambiance
 from Python.DataStorage import getScore, getStartTime, setStartTime,\
      getEndTime, addPoint, addUser
+from util.config import TOKEN
+
 
 Bot_Prefix = ("?", "!")
-
-is_docker = os.environ.get('DOCKER_CONTAINER', False)
-
-if is_docker:
-    TOKEN = os.environ.get('PROD_TOKEN')
-else:
-    with open('keys.json') as json_file:
-        json_keys = json.load(json_file)
-        TOKEN = json_keys['keys']['Dev']['token']
 
 client = Bot(command_prefix=Bot_Prefix)
 
