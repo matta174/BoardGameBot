@@ -20,11 +20,9 @@ from Python.DataStorage import getScore, getStartTime, setStartTime,\
      getEndTime, addPoint, addUser
 from util.config import TOKEN
 
-
 Bot_Prefix = ("?", "!")
 
 client = Bot(command_prefix=Bot_Prefix)
-
 
 @client.command(name='BGGCheck',
                 description="Returns the BGG information on a game",

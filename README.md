@@ -1,5 +1,6 @@
 # BoardGameBot
 This is the repository for a board game Discord bot
+
 Confused? Click [here](https://www.quora.com/What-is-a-discord-bot-What-is-a-discord-server)
 
 ### Prerequisites
