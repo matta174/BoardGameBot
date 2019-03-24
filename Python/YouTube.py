@@ -1,15 +1,8 @@
 import os
 import json
+
 from googleapiclient.discovery import build
-
-is_docker = os.environ.get('DOCKER_CONTAINER', False)
-
-if is_docker:
-    DEVELOPER_KEY = os.environ.get('PROD_YOUTUBE_KEY')
-else:
-    with open('keys.json') as json_file:
-        json_keys = json.load(json_file)
-        DEVELOPER_KEY = json_keys['keys']['Dev']['youtube_key']
+from util.config import DEVELOPER_KEY
 
 YOUTUBE_BASE_VIDEO_URL = 'https://www.youtube.com/watch?v='
 
