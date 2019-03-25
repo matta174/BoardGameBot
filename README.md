@@ -51,3 +51,8 @@ Google APIs Client Library for Python - [link](https://developers.google.com/api
 | Game_Ambiance | Returns the top search result video for selected topic from YouTube | `!amb *topic*` |
 |What_Game_Can_We_Play |Looks up a user's game collection and how many people are playing to see what games you could play |`!wcwp *username*, *number of players* `|
 
+
+## Support on Beerpay
+Hey dude! Help me out for a couple of :beers:!
+
+[![Beerpay](https://beerpay.io/matta174/BoardGameBot/badge.svg?style=beer-square)](https://beerpay.io/matta174/BoardGameBot)  [![Beerpay](https://beerpay.io/matta174/BoardGameBot/make-wish.svg?style=flat-square)](https://beerpay.io/matta174/BoardGameBot?focus=wish)
