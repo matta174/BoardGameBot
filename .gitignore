@@ -108,3 +108,5 @@ venv.bak/
 
 #Secrets
 boardgamebot.env
+keys.json
+util/config.py

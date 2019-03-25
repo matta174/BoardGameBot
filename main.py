@@ -27,9 +27,10 @@ client = Bot(command_prefix=Bot_Prefix)
 @client.command(name='BGGCheck',
                 description="Returns the BGG information on a game",
                 brief="Returns the Board Game Geek information of a game",
-                aliases=['bggck', 'bglookup', 'bg']
+                aliases=['bggck', 'bglookup', 'bg'],
+                pass_context=True
                 )
-async def BGGCheck(gamename):
+async def BGGCheck(ctx,*, gamename):
     main_response = game_lookup(gamename)
     await client.say(main_response)
 
