@@ -16,7 +16,7 @@ import youtube_dl
 from threading import Timer
 from discord import Game
 from discord.ext.commands import Bot, CommandNotFound
-from Python.BGG import game_lookup, user_lookup, random_owned_game, what_games_can_we_play
+from Python.BGG import game_lookup, user_lookup, random_owned_game, what_games_can_we_play, hot_games
 from Python.YouTube import how_to_play, game_ambiance
 from Python.DataStorage import getScore, getStartTime, setStartTime,\
      getEndTime, addPoint, addUser
@@ -137,6 +137,15 @@ async def schedule(date):
     timenow = datetime.datetime.now()
     await client.say(str(timenow))
 
+@client.command(name = 'GetHotGames',
+                description = "Returns BoardGameGeeks current hot games",
+                brief="Returns BoardGameGeeks current hot games",
+                aliases=['ghg','gethotgames']
+                )
+async def gethotgames():
+    response = hot_games()
+    await client.say(response)
+
 
 @client.command(name='Add_user',
                 description="Adds a user",
@@ -185,6 +194,8 @@ async def on_command_error(error, ctx):
                                          'more info on how to use a ' +
                                          'specific command.')
     raise error
+
+
 
 @client.command(pass_context=True)
 async def AmbianceAudio(ctx, topic):

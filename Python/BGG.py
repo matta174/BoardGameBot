@@ -46,3 +46,12 @@ def what_games_can_we_play(name, numberofplayers = 1):
                         if numberofplayers >= item.min_players and numberofplayers <= item.max_players:
                                 gamesString = gamesString + item.name + '\n'
         return("With "+ str(numberofplayers) + " players you can play these games from " + name + "'s collection\n" + gamesString)
+
+
+def hot_games():
+        hot_games_list = bgg.hot_items('boardgame')
+        returned_string = "The current hot games are: \n"
+        for item in hot_games_list:
+                returned_string = returned_string + item.name + '\n'
+        return returned_string
+
