@@ -10,6 +10,8 @@ import xml.etree.ElementTree
 import requests
 import time
 import os
+import youtube_dl
+
 
 from threading import Timer
 from discord import Game
@@ -21,6 +23,8 @@ from Python.DataStorage import getScore, getStartTime, setStartTime,\
 from util.config import TOKEN
 
 Bot_Prefix = ("?", "!")
+
+players = {}
 
 client = Bot(command_prefix=Bot_Prefix)
 
@@ -181,6 +185,32 @@ async def on_command_error(error, ctx):
                                          'more info on how to use a ' +
                                          'specific command.')
     raise error
+
+@client.command(pass_context=True)
+async def AmbianceAudio(ctx, topic):
+    server = ctx.message.server
+    channel = ctx.message.author.voice.voice_channel
+    await client.join_voice_channel(channel)
+    voice_client = client.voice_client_in(server)
+    url = game_ambiance(topic)
+    player = await voice_client.create_ytdl_player(url)
+    players[server.id] = player
+    player.start()
+
+@client.command(pass_context=True)
+async def pause(ctx):
+    id = ctx.message.server.id 
+    players[id].pause()
+
+@client.command(pass_context=True)
+async def stop(ctx):
+    id = ctx.message.server.id 
+    players[id].stop()
+
+@client.command(pass_context=True)
+async def resume(ctx):
+    id = ctx.message.server.id 
+    players[id].resume()    
 
 async def list_servers():
     await client.wait_until_ready()
