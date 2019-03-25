@@ -1,5 +1,6 @@
 # BoardGameBot
 This is the repository for a board game Discord bot
+[![star this repo](http://githubbadges.com/star.svg?user=matta174&repo=BoardGameBot&style=default)](https://github.com/matta174/BoardGameBot)[![fork this repo](http://githubbadges.com/fork.svg?user=matta174&repo=BoardGameBot&style=default)](https://github.com/matta174/BoardGameBot/fork)[![Python 3.6.7](https://img.shields.io/badge/python-3.6.7-blue.svg)](https://www.python.org/downloads/release/python-360/)![GitHub repo size](https://img.shields.io/github/repo-size/matta174/boardgamebot.svg)![Discord](https://img.shields.io/discord/288694246721191947.svg)![GitHub issues](https://img.shields.io/github/issues-raw/matta174/boardgamebot.svg)
 
 Confused? Click [here](https://www.quora.com/What-is-a-discord-bot-What-is-a-discord-server)
 
@@ -47,4 +48,5 @@ Google APIs Client Library for Python - [link](https://developers.google.com/api
 | Lookup_BGG_User| Lookup a board game geek user's game collection  | `!go *username*` |
 |Random_Owned_Game |Returns a random game title from a user's owned list | `!robg *username*`|
 | Game_Ambiance | Returns the top search result video for selected topic from YouTube | `!amb *topic*` |
+|What_Game_Can_We_Play |Looks up a user's game collection and how many people are playing to see what games you could play |`!wcwp *username*, *number of players* `|
 

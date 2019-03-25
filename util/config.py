@@ -30,5 +30,3 @@ else:
     USER = os.environ.get('DEV_DB_USER')
     PASSWORD = os.environ.get('DEV_DB_PASSWORD')
 
-db_connection = psycopg2.connect(host=HOST, user=USER, password=PASSWORD,
-                                 dbname=DATABASE)
