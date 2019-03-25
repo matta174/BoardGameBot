@@ -14,7 +14,7 @@ import os
 from threading import Timer
 from discord import Game
 from discord.ext.commands import Bot, CommandNotFound
-from Python.BGG import game_lookup, user_lookup, random_owned_game
+from Python.BGG import game_lookup, user_lookup, random_owned_game, what_games_can_we_play
 from Python.YouTube import how_to_play, game_ambiance
 from Python.DataStorage import getScore, getStartTime, setStartTime,\
      getEndTime, addPoint, addUser
@@ -56,6 +56,20 @@ async def random_game(ctx, *, arg):
 async def random_users_game(name):
     random_game_name = random_owned_game(name)
     await client.say(random_game_name)
+
+
+@client.command(name='What_Game_Can_We_Play',
+                description="Looks up a user's collection and how many people are playing to see what games you could play",
+                brief="Looks up a user's collection and how many people are playing to see what games you could play",
+                aliases=['wgcwp','wcwp','whatcanweplay'],
+                pass_context = True
+                )
+async def what_game_can_we_play(ctx, *, arg):
+    userInput = arg.split(',')
+    name = userInput[0]
+    number_of_players = int(userInput[1])
+    games_we_can_play = what_games_can_we_play(name, number_of_players)
+    await client.say(games_we_can_play)    
 
 
 @client.command(name='Playtime_Timer',
