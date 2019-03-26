@@ -21,14 +21,11 @@ def game_lookup(string):
 
 def game_expansion(string):
     game = bgg.game(string)
-    expansion = str(game.expansions)
-    isExpansion = game.expansion
-    expands = str(game.expands)
-
-    if isExpansion:
-        return (str(string) + "is already an expansion of " + expands)
-    else:
-        return (str(string) + "expansion games: " + expansion)
+    returned_string = "Here are the expansions for " + string + ":\n"
+    expansion = game.expansions
+    for item in expansion:
+        returned_string = returned_string + item.name + '\n'
+    return returned_string
 
 
 def user_lookup(name):
