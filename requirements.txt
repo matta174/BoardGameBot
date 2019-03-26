@@ -1,4 +1,4 @@
-discord.py==0.16.12
+discord.py[voice]==0.16.12
 boardgamegeek2==1.0.1
 google-api-python-client==1.7.8
 python-dotenv==0.10.1
