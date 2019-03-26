@@ -19,6 +19,17 @@ def game_lookup(string):
             categories_list + "\nComplexity Rank: " + weight +
             '/5' + "\n\nDescription: " + description)
 
+def game_expansion(string):
+    game = bgg.game(string)
+    expansion = str(game.expansions)
+    isExpansion = game.expansion
+    expands = str(game.expands)
+
+    if isExpansion:
+        return (str(string) + "is already an expansion of " + expands)
+    else:
+        return (str(string) + "expansion games: " + expansion)
+
 
 def user_lookup(name):
     user = bgg.collection(name)

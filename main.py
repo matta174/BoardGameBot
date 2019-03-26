@@ -16,7 +16,7 @@ import youtube_dl
 from threading import Timer
 from discord import Game
 from discord.ext.commands import Bot, CommandNotFound
-from Python.BGG import game_lookup, user_lookup, random_owned_game, what_games_can_we_play, hot_games, hot_companies
+from Python.BGG import game_lookup, user_lookup, random_owned_game, what_games_can_we_play, hot_games, hot_companies, game_expansion
 from Python.YouTube import how_to_play, game_ambiance
 from Python.DataStorage import getScore, getStartTime, setStartTime,\
      getEndTime, addPoint, addUser
@@ -36,6 +36,17 @@ client = Bot(command_prefix=Bot_Prefix)
                 )
 async def BGGCheck(ctx,*, gamename):
     main_response = game_lookup(gamename)
+    await client.say(main_response)
+
+
+@client.command(name= 'Expansion_Check',
+                description = "Returns expansions for the selected game if they exist",
+                brief = "Returns expansions of a game",
+                aliases = ['exp', 'expchk', 'expansion'],
+                pass_context = True
+                ) 
+async def Expansion_Check(ctx,*, game):
+    main_response = game_expansion(game)
     await client.say(main_response)
 
 
@@ -151,7 +162,7 @@ async def gethotgames():
                 brief="Returns BoardGameGeeks current hot board game companies",
                 aliases=['ghc','gethotcompanies']
                 )
-async def gethotgames():
+async def gethotcompanies():
     response = hot_companies()
     await client.say(response)
 
