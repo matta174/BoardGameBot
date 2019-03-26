@@ -45,11 +45,15 @@ Google APIs Client Library for Python - [link](https://developers.google.com/api
 | :-------------: |:-------------:| :-----:|
 | BGGCheck      | Returns the BoardGameGeek.com  information of a specified game | `!bg *game name*` |
 | Random_Game     | Returns a random game title from a provided list      |   `!rbg *list of games*` |
-| HowToPlay | Returns the top search result video from YouTube on how to play |    `!htp *game name*` |
-| Lookup_BGG_User| Lookup a board game geek user's game collection  | `!go *username*` |
 |Random_Owned_Game |Returns a random game title from a user's owned list | `!robg *username*`|
-| Game_Ambiance | Returns the top search result video for selected topic from YouTube | `!amb *topic*` |
 |What_Game_Can_We_Play |Looks up a user's game collection and how many people are playing to see what games you could play |`!wcwp *username*, *number of players* `|
+| HowToPlay | Returns the top search result video from YouTube on how to play |    `!htp *game name*` |
+| Game_Ambiance | Returns the top search result video for selected topic from YouTube | `!amb *topic*` |
+| Expansion_Check | Returns expansions for the selected game if they exist | `!exp *game name*` |
+| Lookup_BGG_User| Lookup a board game geek user's game collection  | `!go *username*` |
+| GetHotGames | Returns BoardGameGeeks current hot games | `!ghg` |
+| GetHotCompanies | Returns BoardGameGeeks current hot board game companies | `!ghc` |
+
 
 
 ## Support on Beerpay
