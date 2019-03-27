@@ -136,9 +136,10 @@ async def add_point(user):
                 description="Returns the top search result video from YouTube \
                     on how to play",
                 brief="How to play video",
-                aliases=['htp', 'how', 'video']
+                aliases=['htp', 'how', 'video'], 
+                pass_context=True
                 )
-async def youtube_how_to(gamename):
+async def youtube_how_to(ctx, *,gamename):
     main_response = how_to_play(gamename)
     await client.say(main_response)
 
@@ -190,9 +191,10 @@ async def lookup_bgg_user(name):
 @client.command(name='Game_Ambiance',
                 description="Returns the top search result video from YouTube",
                 brief="Ambiance video",
-                aliases=['amb', 'ambiance']
+                aliases=['amb', 'ambiance'],
+                pass_context = True
                 )
-async def game_ambiance_playlist(topic):
+async def game_ambiance_playlist(ctx, *,topic):
     main_response = game_ambiance(topic)
     await client.say("Here's the result for " + topic +
                      " ambiance \n" + main_response)
