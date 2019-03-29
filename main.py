@@ -200,6 +200,15 @@ async def game_ambiance_playlist(ctx, *,topic):
                      " ambiance \n" + main_response)
 
 
+@client.command(name = 'Next_Video',
+                description = "Returns the next video in the last youtube search",
+                brief = "Return next video",
+                aliases = ['nextvid', 'nxt', 'nvideo'])
+async def next_video():
+    response = next_video()
+    await client.say("Next video: \n" + response)
+
+
 @client.event
 async def on_ready():
     await client.change_presence(game=Game(name="with humans"))
