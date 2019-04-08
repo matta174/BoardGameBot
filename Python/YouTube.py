@@ -50,7 +50,7 @@ def game_ambiance(string):
 
     return(YOUTUBE_BASE_VIDEO_URL + video_id)
 
-def next_video():
+def search_next_video():
     global last_video 
     global request_type
     global vidNum
