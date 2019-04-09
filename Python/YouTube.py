@@ -26,10 +26,13 @@ def how_to_play(string):
 
     global last_video 
     global request_type
+    global vidNum
+
     last_video = string
     request_type = 1
-    return(YOUTUBE_BASE_VIDEO_URL + video_id)
+    vidNum = 2
 
+    return(YOUTUBE_BASE_VIDEO_URL + video_id)
 
 def game_ambiance(string):
     youtubeAPI = build('youtube', 'v3', developerKey=DEVELOPER_KEY)
@@ -45,8 +48,11 @@ def game_ambiance(string):
 
     global last_video 
     global request_type
+    global vidNum
+
     last_video = string
     request_type = 2
+    vidNum = 2
 
     return(YOUTUBE_BASE_VIDEO_URL + video_id)
 
