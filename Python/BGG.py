@@ -8,7 +8,7 @@ def game_lookup(string):
     try:
         game = bgg.game(string)
     except:
-            return( "Game not found, are you sure that's the correct title? Check for any possible errors")    
+            return( "Game not found, are you sure that's the correct title? Check for any possible errors.")    
     rating = str( round(game.rating_average, 2))
     description = str(game.description.strip()[0:1000] + "...")
     gamerank = str(game.boardgame_rank)
@@ -23,9 +23,14 @@ def game_lookup(string):
             '/5' + "\n\nDescription: " + description)
 
 def game_expansion(string):
-    game = bgg.game(string)
+    try:
+        game = bgg.game(string)
+    except:
+            return( "Game not found, are you sure that's the correct title? Check for any possible errors.")   
     returned_string = "Here are the expansions for " + string + ":\n"
     expansion = game.expansions
+    if not expansion:
+            return("There are no expansions for " + str(game.name))
     for item in expansion:
         returned_string = returned_string + item.name + '\n'
     return returned_string
