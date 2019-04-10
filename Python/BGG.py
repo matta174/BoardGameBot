@@ -22,6 +22,7 @@ def game_lookup(string):
             categories_list + "\nComplexity Rank: " + weight +
             '/5' + "\n\nDescription: " + description)
 
+
 def game_expansion(string):
     try:
         game = bgg.game(string)

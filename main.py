@@ -17,7 +17,7 @@ from threading import Timer
 from discord import Game
 from discord.ext.commands import Bot, CommandNotFound
 from Python.BGG import game_lookup, user_lookup, random_owned_game, what_games_can_we_play, hot_games, hot_companies, game_expansion
-from Python.YouTube import how_to_play, game_ambiance
+from Python.YouTube import how_to_play, game_ambiance, search_next_video
 from Python.DataStorage import getScore, getStartTime, setStartTime,\
      getEndTime, addPoint, addUser
 from util.config import TOKEN
@@ -198,6 +198,15 @@ async def game_ambiance_playlist(ctx, *,topic):
     main_response = game_ambiance(topic)
     await client.say("Here's the result for " + topic +
                      " ambiance \n" + main_response)
+
+
+@client.command(name = 'Next_Video',
+                description = "Returns the next video in the last youtube search",
+                brief = "Return next video",
+                aliases = ['nextvid', 'nxt', 'nvideo'])
+async def next_video():
+    response = search_next_video()
+    await client.say("Next video: \n" + response)
 
 
 @client.event
