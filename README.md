@@ -18,7 +18,7 @@ Google APIs Client Library for Python - [link](https://developers.google.com/api
 
 #### How to install them:
 
->pip install discord
+>pip install -U discord.py
 
 >pip install boardgamegeek2
 
