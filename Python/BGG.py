@@ -5,7 +5,10 @@ bgg = boardgamegeek.BGGClient()
 
 
 def game_lookup(string):
-    game = bgg.game(string)
+    try:
+        game = bgg.game(string)
+    except:
+            return( "Game not found, are you sure that's the correct title? Check for any possible errors")    
     rating = str( round(game.rating_average, 2))
     description = str(game.description.strip()[0:1000] + "...")
     gamerank = str(game.boardgame_rank)
