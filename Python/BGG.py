@@ -7,7 +7,7 @@ bgg = boardgamegeek.BGGClient()
 def game_lookup(string):
     try:
         game = bgg.game(string)
-    except:
+    except Exception as e:
             return( "Game not found, are you sure that's the correct title? Check for any possible errors.")    
     rating = str( round(game.rating_average, 2))
     description = str(game.description.strip()[0:1000] + "...")
@@ -26,7 +26,7 @@ def game_lookup(string):
 def game_expansion(string):
     try:
         game = bgg.game(string)
-    except:
+    except Exception as e:
             return( "Game not found, are you sure that's the correct title? Check for any possible errors.")   
     returned_string = "Here are the expansions for " + string + ":\n"
     expansion = game.expansions

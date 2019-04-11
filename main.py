@@ -20,6 +20,7 @@ from Python.BGG import game_lookup, user_lookup, random_owned_game, what_games_c
 from Python.YouTube import how_to_play, game_ambiance, search_next_video
 from Python.DataStorage import getScore, getStartTime, setStartTime,\
      getEndTime, addPoint, addUser
+from Python.Dice import dice
 from util.config import TOKEN
 
 Bot_Prefix = ("?", "!")
@@ -182,6 +183,17 @@ async def lookup_bgg_user(ctx,name):
     await ctx.send("Games that " + name + " owns: \n" + response)
 
 
+@client.command(name = "Dice_Roll",
+                description = "Returns the value of a dice roll number is specified by command",
+                brief = "Returns the value of a dice roll",
+                aliases = ['dice']
+               )
+async def dice_roll(ctx, sides):
+    dice_roll = dice(int(sides))
+    await ctx.send("The "+ str(sides) + " sided die resulted in: " + str(dice_roll))               
+
+
+
 @client.command(name='Game_Ambiance',
                 description="Returns the top search result video from YouTube",
                 brief="Ambiance video",
@@ -219,6 +231,7 @@ async def on_command_error(error, ctx):
 async def on_ready():
     print('Ready!')
 
+
 async def list_servers():
     await client.wait_until_ready()
     while not client.is_closed():
@@ -226,7 +239,6 @@ async def list_servers():
         for guild in client.guilds:
             print(guild.name)
         await asyncio.sleep(600)
-
 
 client.loop.create_task(list_servers())
 client.run(TOKEN)
