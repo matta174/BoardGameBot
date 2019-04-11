@@ -1,5 +1,4 @@
 import os
-import psycopg2
 
 from dotenv import load_dotenv
 
@@ -17,18 +16,3 @@ else:
 
 # Youtube key, same for both environments
 DEVELOPER_KEY = os.environ.get('YOUTUBE_KEY')
-
-# Database configuration
-if is_docker:
-    HOST = os.environ.get('PROD_DB_HOST')
-    DATABASE = os.environ.get('PROD_DB_NAME')
-    USER = os.environ.get('PROD_DB_USER')
-    PASSWORD = os.environ.get('PROD_DB_PASSWORD')
-else:
-    HOST = os.environ.get('DEV_DB_HOST')
-    DATABASE = os.environ.get('DEV_DB_NAME')
-    USER = os.environ.get('DEV_DB_USER')
-    PASSWORD = os.environ.get('DEV_DB_PASSWORD')
-
-db_connection = psycopg2.connect(host=HOST, user=USER, password=PASSWORD,
-                                 dbname=DATABASE)
