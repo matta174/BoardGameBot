@@ -22,6 +22,11 @@ from Python.DataStorage import getScore, getStartTime, setStartTime,\
      getEndTime, addPoint, addUser
 from Python.Dice import dice
 from util.config import TOKEN
+from util.database_initialization import intitialize_db
+
+
+if not os.path.isfile('boardgamebot.db'):
+    intitialize_db()
 
 Bot_Prefix = ("?", "!")
 
