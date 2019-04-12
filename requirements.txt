@@ -6,3 +6,4 @@ psycopg2==2.7.7
 pymongo==3.7.2
 dnspython==1.16.0
 youtube_dl==2019.3.18
+Py-StackExchange==1.12.0

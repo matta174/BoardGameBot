@@ -16,7 +16,7 @@ import youtube_dl
 from threading import Timer
 from discord import Game
 from discord.ext.commands import Bot, CommandNotFound
-from Python.BGG import game_lookup, user_lookup, random_owned_game, what_games_can_we_play, hot_games, hot_companies, game_expansion
+from Python.BGG import game_lookup, user_lookup, random_owned_game, what_games_can_we_play, hot_games, hot_companies, game_expansion, search_stackexchange
 from Python.YouTube import how_to_play, game_ambiance, search_next_video
 from Python.DataStorage import getScore, getStartTime, setStartTime,\
      getEndTime, addPoint, addUser
@@ -163,6 +163,19 @@ async def gethotcompanies(ctx):
 
 
 
+@client.command(name = 'AskQuestion',
+                description = "Returns a search of Stack Exchange similar questions",
+                brief="Returns a search of Stack Exchange similar questions",
+                aliases=['ask','ASK','question']
+                )
+async def ask(ctx, *, arg):
+    userInput = arg.split(',')
+    game = userInput[0]
+    question = userInput[1]
+    response = search_stackexchange(game,question)
+    await ctx.send(response)
+
+
 @client.command(name='Add_user',
                 description="Adds a user",
                 brief="Creates a user with 0 points",
@@ -239,6 +252,7 @@ async def list_servers():
         for guild in client.guilds:
             print(guild.name)
         await asyncio.sleep(600)
+
 
 client.loop.create_task(list_servers())
 client.run(TOKEN)

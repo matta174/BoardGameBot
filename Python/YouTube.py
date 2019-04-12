@@ -12,6 +12,7 @@ last_video = ''
 request_type = 0
 vidNum = 2
 
+
 def how_to_play(string):
     youtubeAPI = build('youtube', 'v3', developerKey=DEVELOPER_KEY)
     response = youtubeAPI.search().list(

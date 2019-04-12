@@ -1,7 +1,10 @@
 import boardgamegeek
 import random
+import stackexchange 
+
 
 bgg = boardgamegeek.BGGClient()
+so = stackexchange.Site(stackexchange.BoardampCardGames)
 
 
 def game_lookup(string):
@@ -10,13 +13,23 @@ def game_lookup(string):
     except Exception as e:
             return( "Game not found, are you sure that's the correct title? Check for any possible errors.")    
     rating = str( round(game.rating_average, 2))
+    heart_count = int(game.rating_average)
+    heart_emoji = '\U0001F49A'
+    sad_heart_emoji = '\U0001F5A4'
+    heart_string = heart_emoji
+    for x in range (1, heart_count):
+            heart_string += heart_emoji
+    empty_heart_count = 10 - heart_count
+    for x in range(1, empty_heart_count):
+            heart_string += sad_heart_emoji
+
     description = str(game.description.strip()[0:1000] + "...")
     gamerank = str(game.boardgame_rank)
     categories = game.categories
     number_of_players = str(game.min_players) + "-" + str(game.max_players)
     weight = str( round(game.rating_average_weight,2))
     categories_list = ', '.join(categories)
-    return ("Game Rating for " + str(string) + " is: " + rating +
+    return ("Game Rating for " + str(string) + " is: " + heart_string +
             "\nBoardGameGeek Rank: " + gamerank + "\nNumber of players: " +
             number_of_players + "\nCategories: " +
             categories_list + "\nComplexity Rank: " + weight +
@@ -38,7 +51,10 @@ def game_expansion(string):
 
 
 def user_lookup(name):
-    user = bgg.collection(name)
+    try:
+        user = bgg.collection(name)
+    except Exception as e:
+            return("User not found, are you sure that's the correct username? Check for any possible errors.")
     games_string = ""
     for item in user.items:
         if item.owned:
@@ -47,16 +63,22 @@ def user_lookup(name):
 
 
 def random_owned_game(name):
-    user = bgg.collection(name)
-    games_list = []
-    for item in user.items:
-        if item.owned:
-            games_list.append(item.name)
-    random_game = random.choice(games_list)
-    return(random_game)
+        try:
+                user = bgg.collection(name)
+        except Exception as e:
+                return("User not found, are you sure that's the correct username? Check for any possible errors.")
+        games_list = []
+        for item in user.items:
+                if item.owned:
+                        games_list.append(item.name)
+        random_game = random.choice(games_list)
+        return(random_game)
 
 def what_games_can_we_play(name, numberofplayers = 1):
-        user = bgg.collection(name)
+        try:
+                user = bgg.collection(name)
+        except Exception as e:
+            return("User not found, are you sure that's the correct username? Check for any possible errors.")
         gamesString = ""
         for item in user.items:
                 if item.owned:
@@ -81,3 +103,22 @@ def hot_companies():
         return returned_string
 
 
+def search_stackexchange(game_tag, question):
+        qs =  so.similar(tagged=game_tag,title=question)
+        returned_string = 'Here are the questions I found on the boardgames stack exchange: \n'
+        limit = 0
+        if qs:
+                for q in qs:
+                        returned_string += str(q.link) 
+                        if q.is_answered:
+                                returned_string += ' \U00002705'
+                        else:
+                                returned_string += ' \U0000274C'
+                        returned_string += '\n'
+                        limit += 1
+                        if limit == 5:
+                                break
+        else:
+                returned_string = 'No similar questions have been found on https://boardgames.stackexchange.com/'
+        
+        return returned_string
