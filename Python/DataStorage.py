@@ -1,18 +1,24 @@
 import json
 import datetime
 import time
+import sqlite3
+import logging
+
+logger = logging.Logger('catch_all')
 
 
 def addUser(name):
-    with open("data\\users.json", "r+") as json_file:
-        data = json.load(json_file)
-        new_user = {'name': name,
-                    'score': 0
-                    }
-        data['users'].append(new_user)
-        json_file.seek(0)
-        json.dump(data, json_file, indent=4)
-        json_file.truncate()
+    try:
+            conn = sqlite3.connect('boardgamebot.db')
+            c = conn.cursor()
+            c.execute('INSERT INTO players (Name) VALUES (?)', (name,))
+            conn.commit()
+            return 'Added user ' + name
+    except BaseException as e:
+        logger.error(e, exc_info=True)
+        return 'Error adding user, try again.'
+    finally:
+        conn.close()
 
 
 def getScore():
