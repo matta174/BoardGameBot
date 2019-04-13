@@ -131,8 +131,8 @@ async def schedule(date):
                 aliases=['addus', 'add_user', 'au'],
                 )
 async def add_user(name):
-    addUser(name)
-    await client.say("Added " + name)
+    response = addUser(name)
+    await client.say(response)
 
 
 @client.command(name='Lookup_BGG_User',
