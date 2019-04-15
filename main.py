@@ -29,7 +29,7 @@ from discord.ext.commands import Bot, CommandNotFound
 from Python.BGG import game_lookup, user_lookup, random_owned_game
 from Python.YouTube import how_to_play, game_ambiance
 from Python.DataStorage import getScore, getStartTime, setStartTime,\
-     getEndTime, addWin
+     getEndTime, add_win_db
 from util.config import TOKEN
 from util.database_initialization import intitialize_db
 
