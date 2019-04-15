@@ -1,18 +1,10 @@
 import json
 import datetime
 import time
+import sqlite3
+import logging
 
-
-def addUser(name):
-    with open("data\\users.json", "r+") as json_file:
-        data = json.load(json_file)
-        new_user = {'name': name,
-                    'score': 0
-                    }
-        data['users'].append(new_user)
-        json_file.seek(0)
-        json.dump(data, json_file, indent=4)
-        json_file.truncate()
+logger = logging.Logger('catch_all')
 
 
 def getScore():
@@ -24,18 +16,59 @@ def getScore():
     return output_string
 
 
-def addPoint(key):
-    with open("data\\users.json", "r+") as json_file:
-        data = json.load(json_file)
-        for d in data['users']:
-            if key in d['name']:
-                test = d['score']
-                test = test + 1
-                d['score'] = test
-        json_file.seek(0)
-        json.dump(data, json_file, indent=4)
-        json_file.truncate()
-    return data
+def add_win_db(ctx, member, arg):
+    try:
+        member_id = str(member.id)
+        conn = sqlite3.connect('boardgamebot.db')
+        c = conn.cursor()
+        c.execute('SELECT id FROM games WHERE name = \'' + arg + '\'')
+        game_id = c.fetchone()
+        if game_id:
+                game_id = game_id[0]
+                c.execute('SELECT id ' +
+                          'FROM wins WHERE game_id = ' + str(game_id) +
+                          ' AND discord_id = ' + member_id)
+                wins_id = c.fetchone()
+                if wins_id:
+                    wins_id = wins_id[0]
+                    c.execute('SELECT number_of_wins FROM wins ' +
+                              'WHERE id = ' + str(wins_id))
+                    old_number_of_wins = c.fetchone()[0]
+                    c.execute('UPDATE wins SET number_of_wins = ? ' +
+                              'WHERE id = ?',
+                              (old_number_of_wins + 1, wins_id,))
+                    conn.commit()
+                    return 'Added a win to ' + member.name + ' for ' + arg
+                else:
+                    c.execute("""INSERT INTO wins
+                              (discord_id, game_id, number_of_wins)
+                              VALUES (?,?,?)""", (member_id, game_id, 1,))
+                    conn.commit()
+                return 'Added a win to ' + member.name + ' for ' + arg
+        else:
+            return 'No game with the name ' + arg + ' could be found. Please add it first using the !ag command.'
+    except BaseException as e:
+        logger.error(e, exc_info=True)
+        return 'Failed to add a win to ' + member.name + ' for ' + arg
+    finally:
+        conn.close()
+
+
+def add_game_db(ctx, name):
+    try:
+        conn = sqlite3.connect('boardgamebot.db')
+        c = conn.cursor()
+        c.execute('INSERT INTO games (name) VALUES (?)', (name,))
+        conn.commit()
+        return 'Added the game ' + name
+    except sqlite3.IntegrityError as e:
+        logger.error(e, exc_info=True)
+        return name + ' has already been added.'
+    except BaseException as e:
+        logger.error(e, exc_info=True)
+        return 'Failed to add game ' + name
+    finally:
+        conn.close()
 
 
 def getStartTime():

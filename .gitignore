@@ -110,3 +110,6 @@ venv.bak/
 boardgamebot.env
 keys.json
 util/config.py
+
+#SQLite Database
+boardgamebot.db
