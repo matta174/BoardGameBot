@@ -13,11 +13,12 @@ import os
 
 from threading import Timer
 from discord import Game
+from discord import Member
 from discord.ext.commands import Bot, CommandNotFound
 from Python.BGG import game_lookup, user_lookup, random_owned_game
 from Python.YouTube import how_to_play, game_ambiance
 from Python.DataStorage import getScore, getStartTime, setStartTime,\
-     getEndTime, addPoint, addUser
+     getEndTime, addWin
 from util.config import TOKEN
 from util.database_initialization import intitialize_db
 
@@ -98,14 +99,14 @@ async def check_score():
     await client.say("Total wins per user: " + str(scores))
 
 
-@client.command(name='Add_Point',
-                description="Adds a point to the user's score",
-                brief="Adds a point to the user's score",
-                aliases=['addpt', 'add_point', 'ap'],
+@client.command(name='Add_Win',
+                description="Adds a win to the user's total for a game",
+                brief="Adds a win to ther user for a game",
+                aliases=['addwin', 'add_win', 'aw', 'win'],
                 )
-async def add_point(user):
-    addPoint(user)
-    await client.say("Added point to " + user)
+async def add_win(ctx, member: discord.Member, arg):
+    response = addWin(arg)
+    await client.say(response)
 
 
 @client.command(name='HowToPlay',
@@ -123,16 +124,6 @@ async def youtube_how_to(gamename):
 async def schedule(date):
     timenow = datetime.datetime.now()
     await client.say(str(timenow))
-
-
-@client.command(name='Add_user',
-                description="Adds a user",
-                brief="Creates a user with 0 points",
-                aliases=['addus', 'add_user', 'au'],
-                )
-async def add_user(name):
-    response = addUser(name)
-    await client.say(response)
 
 
 @client.command(name='Lookup_BGG_User',
