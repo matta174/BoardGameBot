@@ -11,24 +11,25 @@ import requests
 import time
 import os
 import youtube_dl
-import Python.BGG
-import Python.Dice
-import Python.DataStorage
+import discord
+import logging
 
+from Python.BGG import *
+from Python.DataStorage import *
+from Python.Dice import *
+from Python.YouTube import *
+
+from util.config import *
+from util.database_initialization import *
 
 from threading import Timer
-from discord import Game
-from discord import Member
 from discord.ext.commands import Bot, CommandNotFound
-from Python.YouTube import how_to_play, game_ambiance, search_next_video
-from Python.DataStorage import getScore, getStartTime, setStartTime,\
-     getEndTime, addPoint, addUser
-from util.config import TOKEN
-from util.database_initialization import intitialize_db
 
 
 if not os.path.isfile('boardgamebot.db'):
     intitialize_db()
+
+logger = logging.Logger('catch_all')
 
 Bot_Prefix = ("?", "!")
 
@@ -125,25 +126,24 @@ async def check_score(ctx):
     await ctx.send("Total wins per user: " + str(scores))
 
 
-<<<<<<< HEAD
-@client.command(name='Add_Point',
-                description="Adds a point to the user's score",
-                brief="Adds a point to the user's score",
-                aliases=['addpt', 'add_point', 'ap']
-                )
-async def add_point(ctx, user):
-    addPoint(user)
-    await ctx.send("Added point to " + user)
-=======
 @client.command(name='Add_Win',
                 description="Adds a win to the user's total for a game",
                 brief="Adds a win to ther user for a game",
                 aliases=['addwin', 'add_win', 'aw', 'win'],
                 )
-async def add_win(ctx, member: discord.Member, arg):
-    response = addWin(arg)
-    await client.say(response)
->>>>>>> Added wins command
+async def add_win(ctx, member: discord.Member, *, arg):
+    response = add_win_db(ctx, member, arg)
+    await ctx.send(response)
+
+
+@client.command(name='Add_Game',
+                description="Adds a game to the database so wins can be recorded for it",
+                brief="Adds a game to the database",
+                aliases=['addgame', 'add_game', 'ag'],
+                )
+async def add_game(ctx, name):
+    response = add_game_db(ctx, name)
+    await ctx.send(response)
 
 
 @client.command(name='HowToPlay',
@@ -152,7 +152,7 @@ async def add_win(ctx, member: discord.Member, arg):
                 brief="How to play video",
                 aliases=['htp', 'how', 'video']
                 )
-async def youtube_how_to(ctx, *,gamename):
+async def youtube_how_to(ctx, *, gamename):
     main_response = how_to_play(gamename)
     await ctx.send(main_response)
 
@@ -161,6 +161,7 @@ async def youtube_how_to(ctx, *,gamename):
 async def schedule(ctx, date):
     timenow = datetime.datetime.now()
     await ctx.say(str(timenow))
+
 
 @client.command(name='GetHotGames',
                 description="Returns BoardGameGeeks current hot games",
@@ -182,7 +183,6 @@ async def gethotcompanies(ctx):
     await ctx.send(response)
 
 
-<<<<<<< HEAD
 @client.command(name='AskQuestion',
                 description="Returns a search of Stack Exchange similar questions",
                 brief="Returns a search of Stack Exchange similar questions",
@@ -196,8 +196,6 @@ async def ask(ctx, *, arg):
     await ctx.send(response)
 
 
-=======
->>>>>>> Added wins command
 @client.command(name='Lookup_BGG_User',
                 description='Lookup BGG user',
                 brief="lookup bgg user",
@@ -239,17 +237,17 @@ async def next_video(ctx):
     await ctx.send("Next video: \n" + response)
 
 
-@client.event
-async def on_command_error(error, ctx):
-    if isinstance(error, CommandNotFound):
-        return await ctx.send(ctx.message.channel,
-                                         '\"' + ctx.invoked_with + '\"'
-                                         ' is not a valid ' +
-                                         ' command. Please try again.' +
-                                         ' Use !help <command name> to get ' +
-                                         'more info on how to use a ' +
-                                         'specific command.')
-    raise error
+# @client.event
+# async def on_command_error(ctx, error):
+#     if isinstance(error, CommandNotFound):
+#         return await ctx.send(ctx.message.channel,
+#                                          '\"' + ctx.invoked_with + '\"'
+#                                          ' is not a valid ' +
+#                                          ' command. Please try again.' +
+#                                          ' Use !help <command name> to get ' +
+#                                          'more info on how to use a ' +
+#                                          'specific command.')
+#         raise error
 
 
 @client.event

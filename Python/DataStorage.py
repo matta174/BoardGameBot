@@ -16,36 +16,57 @@ def getScore():
     return output_string
 
 
-def addWin(ctx, member, arg):
+def add_win_db(ctx, member, arg):
     try:
+        member_id = str(member.id)
         conn = sqlite3.connect('boardgamebot.db')
         c = conn.cursor()
         c.execute('SELECT id FROM games WHERE name = \'' + arg + '\'')
-        game_id = c.fetchall()
+        game_id = c.fetchone()
         if game_id:
+                game_id = game_id[0]
                 c.execute('SELECT id ' +
-                          'FROM wins WHERE game_id = \'' + game_id + '\'' +
-                          'AND discord_id = \'' + member.id + '\'')
-                wins_id = c.fetchall()
+                          'FROM wins WHERE game_id = ' + str(game_id) +
+                          ' AND discord_id = ' + member_id)
+                wins_id = c.fetchone()
                 if wins_id:
+                    wins_id = wins_id[0]
                     c.execute('SELECT number_of_wins FROM wins ' +
-                              'WHERE wins_id = ' + wins_id + '\'')
-                    old_number_of_wins = c.fetchall()
+                              'WHERE id = ' + str(wins_id))
+                    old_number_of_wins = c.fetchone()[0]
                     c.execute('UPDATE wins SET number_of_wins = ? ' +
                               'WHERE id = ?',
                               (old_number_of_wins + 1, wins_id,))
                     conn.commit()
+                    return 'Added a win to ' + member.name + ' for ' + arg
                 else:
-                    c.execute('''INSERT INTO wins
+                    c.execute("""INSERT INTO wins
                               (discord_id, game_id, number_of_wins)
-                              VALUES (?,?,?)''', (member.id, game_id, 1))
-                return 'Added a win to ' + user + ' for ' + game
+                              VALUES (?,?,?)""", (member_id, game_id, 1,))
+                    conn.commit()
+                return 'Added a win to ' + member.name + ' for ' + arg
         else:
-            return """No game with the name ' + arg + ' could be found.
-                      Please add it first using the !ag command."""
+            return 'No game with the name ' + arg + ' could be found. Please add it first using the !ag command.'
     except BaseException as e:
-        logger.error(e, exc_info=true)
-        return 'Failed to add a win to ' + user + ' for ' + game
+        logger.error(e, exc_info=True)
+        return 'Failed to add a win to ' + member.name + ' for ' + arg
+    finally:
+        conn.close()
+
+
+def add_game_db(ctx, name):
+    try:
+        conn = sqlite3.connect('boardgamebot.db')
+        c = conn.cursor()
+        c.execute('INSERT INTO games (name) VALUES (?)', (name,))
+        conn.commit()
+        return 'Added the game ' + name
+    except sqlite3.IntegrityError as e:
+        logger.error(e, exc_info=True)
+        return name + ' has already been added.'
+    except BaseException as e:
+        logger.error(e, exc_info=True)
+        return 'Failed to add game ' + name
     finally:
         conn.close()
 
