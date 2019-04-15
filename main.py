@@ -12,7 +12,6 @@ import time
 import os
 import youtube_dl
 import discord
-import logging
 
 from Python.BGG import *
 from Python.DataStorage import *
