@@ -12,15 +12,17 @@ import time
 import os
 import youtube_dl
 import Python.BGG
+import Python.Dice
+import Python.DataStorage
 
 
 from threading import Timer
 from discord import Game
+from discord import Member
 from discord.ext.commands import Bot, CommandNotFound
 from Python.YouTube import how_to_play, game_ambiance, search_next_video
 from Python.DataStorage import getScore, getStartTime, setStartTime,\
      getEndTime, addPoint, addUser
-from Python.Dice import dice
 from util.config import TOKEN
 from util.database_initialization import intitialize_db
 
@@ -123,6 +125,7 @@ async def check_score(ctx):
     await ctx.send("Total wins per user: " + str(scores))
 
 
+<<<<<<< HEAD
 @client.command(name='Add_Point',
                 description="Adds a point to the user's score",
                 brief="Adds a point to the user's score",
@@ -131,6 +134,16 @@ async def check_score(ctx):
 async def add_point(ctx, user):
     addPoint(user)
     await ctx.send("Added point to " + user)
+=======
+@client.command(name='Add_Win',
+                description="Adds a win to the user's total for a game",
+                brief="Adds a win to ther user for a game",
+                aliases=['addwin', 'add_win', 'aw', 'win'],
+                )
+async def add_win(ctx, member: discord.Member, arg):
+    response = addWin(arg)
+    await client.say(response)
+>>>>>>> Added wins command
 
 
 @client.command(name='HowToPlay',
@@ -169,6 +182,7 @@ async def gethotcompanies(ctx):
     await ctx.send(response)
 
 
+<<<<<<< HEAD
 @client.command(name='AskQuestion',
                 description="Returns a search of Stack Exchange similar questions",
                 brief="Returns a search of Stack Exchange similar questions",
@@ -182,6 +196,8 @@ async def ask(ctx, *, arg):
     await ctx.send(response)
 
 
+=======
+>>>>>>> Added wins command
 @client.command(name='Lookup_BGG_User',
                 description='Lookup BGG user',
                 brief="lookup bgg user",
