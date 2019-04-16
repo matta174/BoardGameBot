@@ -1,34 +1,23 @@
 # Work with Python 3.6
 import asyncio
 import random
-import json
 import datetime
-import traceback
 import logging
-import pprint
-import xml.etree.ElementTree
-import requests
-import time
 import os
-import youtube_dl
-import discord
+import discord.ext.commands
 
-from Python.BGG import *
-from Python.DataStorage import *
-from Python.Dice import *
-from Python.YouTube import *
+import Python.BGG
+import Python.DataStorage
+import Python.Dice
+import Python.YouTube
 
-from util.config import *
-from util.database_initialization import *
+import util.database_initialization
 
-from threading import Timer
-from discord import Game
-from discord import Member
-from discord.ext.commands import Bot, CommandNotFound
+from util.config import TOKEN
 
 
 if not os.path.isfile('boardgamebot.db'):
-    intitialize_db()
+    util.database_initialization.intitialize_db()
 
 logger = logging.Logger('catch_all')
 
@@ -36,7 +25,7 @@ Bot_Prefix = ("?", "!")
 
 players = {}
 
-client = Bot(command_prefix=Bot_Prefix)
+client = discord.ext.commands.Bot(command_prefix=Bot_Prefix)
 
 
 @client.command(name='BGGCheck',
@@ -44,8 +33,8 @@ client = Bot(command_prefix=Bot_Prefix)
                 brief="Returns the Board Game Geek information of a game",
                 aliases=['bggck', 'bglookup', 'bg']
                 )
-async def BGGCheck(ctx, *, gamename):
-    main_response = game_lookup(gamename)
+async def bgg_check(ctx, *, gamename):
+    main_response = Python.BGG.game_lookup(gamename)
     await ctx.send(main_response)
 
 
@@ -54,8 +43,8 @@ async def BGGCheck(ctx, *, gamename):
                 brief="Returns expansions of a game",
                 aliases=['exp', 'expchk', 'expansion']
                 ) 
-async def Expansion_Check(ctx, *, game):
-    main_response = game_expansion(game)
+async def expansion_check(ctx, *, game):
+    main_response = Python.BGG.game_expansion(game)
     await ctx.send(main_response)
 
 
@@ -77,7 +66,7 @@ async def random_game(ctx, *, arg):
                 aliases=['randomownedpick', 'randobg', 'robg']
                 )
 async def random_users_game(ctx, name):
-    random_game_name = random_owned_game(name)
+    random_game_name = Python.BGG.random_owned_game(name)
     await ctx.send(random_game_name)
 
 
@@ -87,10 +76,10 @@ async def random_users_game(ctx, name):
                 aliases=['wgcwp', 'wcwp', 'whatcanweplay']
                 )
 async def what_game_can_we_play(ctx, *, arg):
-    userInput = arg.split(',')
-    name = userInput[0]
-    number_of_players = int(userInput[1])
-    games_we_can_play = what_games_can_we_play(name, number_of_players)
+    user_input = arg.split(',')
+    name = user_input[0]
+    number_of_players = int(user_input[1])
+    games_we_can_play = Python.BGG.what_games_can_we_play(name, number_of_players)
     await ctx.send(games_we_can_play)    
 
 
@@ -99,8 +88,8 @@ async def what_game_can_we_play(ctx, *, arg):
                 brief="Times playtime of a game",
                 aliases=['starttimer', 'timerstart', 'st']
                 )
-async def Playtime_Timer(ctx):
-    setStartTime()
+async def playtime_timer(ctx):
+    Python.DataStorage.setStartTime()
     await ctx.send(
         "Started the timer at: " +
         str(datetime.datetime.now().strftime("%m/%d/%Y, %H:%M:%S")))
@@ -113,7 +102,7 @@ async def Playtime_Timer(ctx):
                 aliases=['endtimer', 'end_time', 'et']
                 )
 async def end_time(ctx):
-    end_time = getEndTime()
+    end_time = Python.DataStorage.getEndTime()
     await ctx.send("Total play time: " + end_time)
 
 
@@ -123,7 +112,7 @@ async def end_time(ctx):
                 aliases=['chksc', 'check_score', 'cs']
                 )
 async def check_score(ctx):
-    scores = getScore()
+    scores = Python.DataStorage.getScore()
     await ctx.send("Total wins per user: " + str(scores))
 
 
@@ -133,7 +122,7 @@ async def check_score(ctx):
                 aliases=['addwin', 'add_win', 'aw', 'win'],
                 )
 async def add_win(ctx, member: discord.Member, *, arg):
-    response = add_win_db(ctx, member, arg)
+    response = Python.DataStorage.add_win_db(ctx, member, arg)
     await ctx.send(response)
 
 
@@ -143,7 +132,7 @@ async def add_win(ctx, member: discord.Member, *, arg):
                 aliases=['addgame', 'add_game', 'ag'],
                 )
 async def add_game(ctx, name):
-    response = add_game_db(ctx, name)
+    response = Python.DataStorage.add_game_db(ctx, name)
     await ctx.send(response)
 
 
@@ -153,15 +142,15 @@ async def add_game(ctx, name):
                 brief="How to play video",
                 aliases=['htp', 'how', 'video']
                 )
-async def youtube_how_to(ctx, *, gamename):
-    main_response = how_to_play(gamename)
+async def youtube_how_to(ctx, *, game_name):
+    main_response = Python.YouTube.how_to_play(game_name)
     await ctx.send(main_response)
 
 
 @client.command()
-async def schedule(ctx, date):
-    timenow = datetime.datetime.now()
-    await ctx.say(str(timenow))
+async def schedule(ctx):
+    time_now = datetime.datetime.now()
+    await ctx.say(str(time_now))
 
 
 @client.command(name='GetHotGames',
@@ -169,8 +158,8 @@ async def schedule(ctx, date):
                 brief="Returns BoardGameGeeks current hot games",
                 aliases=['ghg', 'gethotgames']
                 )
-async def gethotgames(ctx):
-    response = hot_games()
+async def get_hot_games(ctx):
+    response = Python.BGG.hot_games()
     await ctx.send(response)
 
 
@@ -179,8 +168,8 @@ async def gethotgames(ctx):
                 brief="Returns BoardGameGeeks current hot board game companies",
                 aliases=['ghc', 'gethotcompanies']
                 )
-async def gethotcompanies(ctx):
-    response = hot_companies()
+async def get_hot_companies(ctx):
+    response = Python.BGG.hot_companies()
     await ctx.send(response)
 
 
@@ -190,10 +179,10 @@ async def gethotcompanies(ctx):
                 aliases=['ask', 'ASK', 'question']
                 )
 async def ask(ctx, *, arg):
-    userInput = arg.split(',')
-    game = userInput[0]
-    question = userInput[1]
-    response = search_stackexchange(game, question)
+    user_input = arg.split(',')
+    game = user_input[0]
+    question = user_input[1]
+    response = Python.BGG.search_stackexchange(game, question)
     await ctx.send(response)
 
 
@@ -203,7 +192,7 @@ async def ask(ctx, *, arg):
                 aliases=['gamesowned', 'lookup-games', 'go']
                 )
 async def lookup_bgg_user(ctx, name):
-    response = user_lookup(name)
+    response = Python.BGG.user_lookup(name)
     await ctx.send("Games that " + name + " owns: \n" + response)
 
 
@@ -213,7 +202,7 @@ async def lookup_bgg_user(ctx, name):
                 aliases=['dice']
                 )
 async def dice_roll(ctx, sides):
-    dice_roll = dice(int(sides))
+    dice_roll = Python.Dice.dice(int(sides))
     await ctx.send("The " + str(sides) + " sided die resulted in: " + str(dice_roll))               
 
 
@@ -223,7 +212,7 @@ async def dice_roll(ctx, sides):
                 aliases=['amb', 'ambiance']
                 )
 async def game_ambiance_playlist(ctx, *, topic):
-    main_response = game_ambiance(topic)
+    main_response = Python.YouTube.game_ambiance(topic)
     await ctx.send("Here's the result for " + topic +
                    " ambiance \n" + main_response)
 
@@ -234,7 +223,7 @@ async def game_ambiance_playlist(ctx, *, topic):
                 aliases=['nextvid', 'nxt', 'nvideo']
                 )
 async def next_video(ctx):
-    response = search_next_video()
+    response = Python.YouTube.search_next_video()
     await ctx.send("Next video: \n" + response)
 
 
