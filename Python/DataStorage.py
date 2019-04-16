@@ -7,13 +7,28 @@ import logging
 logger = logging.Logger('catch_all')
 
 
-def getScore():
-    jsonFile = open("data\\users.json", "r+")
-    data = json.load(jsonFile)
-    output_string = "\n"
-    for d in data['users']:
-        output_string += d['name'] + ': ' + str(d['score']) + '\n'
-    return output_string
+def get_wins(ctx):
+    try:
+        conn = sqlite3.connect('boardgamebot.db')
+        c = conn.cursor()
+        c.execute('SELECT g.name, discord_id, number_of_wins ' + 
+                     'FROM wins ' +
+                     'INNER JOIN games g on wins.game_id = g.id ' +
+                     'GROUP BY g.name, discord_id')
+        rows = c.fetchall()
+        response = ''
+
+        for row in rows:
+            response += row[0] + ' ' + ctx.guild.get_member(int(row[1])).display_name + ' ' + str(row[2]) + '\n'
+            #TODO: Better formatting for this
+        
+        return response
+
+    except BaseException as e:
+            logger.error(e, exc_info=True)
+            return 'Failed to retrieve wins'
+    finally:
+        conn.close()
 
 
 def add_win_db(ctx, member, arg):

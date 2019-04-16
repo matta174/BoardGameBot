@@ -1,20 +1,17 @@
 # Work with Python 3.6
 import asyncio
-import random
 import datetime
 import logging
 import os
-import discord.ext.commands
+import random
 
+import discord.ext.commands
 import Python.BGG
 import Python.DataStorage
 import Python.Dice
 import Python.YouTube
-
 import util.database_initialization
-
 from util.config import TOKEN
-
 
 if not os.path.isfile('boardgamebot.db'):
     util.database_initialization.intitialize_db()
@@ -106,14 +103,14 @@ async def end_time(ctx):
     await ctx.send("Total play time: " + end_time)
 
 
-@client.command(name='Check_Score',
-                description="Checks the user's score",
+@client.command(name='Get_All_Wins',
+                description="Gets the wins of every user for every game",
                 brief="Checks user's scores",
-                aliases=['chksc', 'check_score', 'cs']
+                aliases=['getwins', 'get_wins', 'gw']
                 )
-async def check_score(ctx):
-    scores = Python.DataStorage.getScore()
-    await ctx.send("Total wins per user: " + str(scores))
+async def get_all_wins(ctx):
+    response = Python.DataStorage.get_wins(ctx)
+    await ctx.send("Scoreboard \n" + response)
 
 
 @client.command(name='Add_Win',
@@ -131,7 +128,7 @@ async def add_win(ctx, member: discord.Member, *, arg):
                 brief="Adds a game to the database",
                 aliases=['addgame', 'add_game', 'ag'],
                 )
-async def add_game(ctx, name):
+async def add_game(ctx, *, name):
     response = Python.DataStorage.add_game_db(ctx, name)
     await ctx.send(response)
 
