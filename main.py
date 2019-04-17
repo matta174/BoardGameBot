@@ -110,7 +110,7 @@ async def end_time(ctx):
                 )
 async def get_all_wins(ctx):
     response = Python.DataStorage.get_wins(ctx)
-    await ctx.send("Scoreboard \n" + response)
+    await ctx.send('```' + response + '```')
 
 
 @client.command(name='Add_Win',

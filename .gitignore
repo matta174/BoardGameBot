@@ -65,6 +65,7 @@ instance/
 
 # Sphinx documentation
 docs/_build/
+docs/
 
 # PyBuilder
 target/
@@ -113,3 +114,6 @@ util/config.py
 
 #SQLite Database
 boardgamebot.db
+
+#Misc IDE stuff
+.idea/
