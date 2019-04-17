@@ -3,9 +3,9 @@ import datetime
 import time
 import sqlite3
 import logging
+import prettytable
 
 logger = logging.Logger('catch_all')
-
 
 def get_wins(ctx):
     try:
@@ -16,19 +16,20 @@ def get_wins(ctx):
                      'INNER JOIN games g on wins.game_id = g.id ' +
                      'GROUP BY g.name, discord_id')
         rows = c.fetchall()
-        response = ''
+        pretty_table = prettytable.PrettyTable()
+        pretty_table.field_names = ['Game', 'Player', 'Wins']
 
         for row in rows:
-            response += row[0] + ' ' + ctx.guild.get_member(int(row[1])).display_name + ' ' + str(row[2]) + '\n'
-            #TODO: Better formatting for this
-        
-        return response
+            pretty_table.add_row([row[0], ctx.guild.get_member(int(row[1])).display_name, row[2]])
+
+        response = pretty_table.get_string()
 
     except BaseException as e:
             logger.error(e, exc_info=True)
-            return 'Failed to retrieve wins'
+            response = 'Failed to retrieve wins'
     finally:
         conn.close()
+        return response
 
 
 def add_win_db(ctx, member, arg):
