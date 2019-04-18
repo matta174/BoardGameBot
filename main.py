@@ -4,6 +4,7 @@ import datetime
 import logging
 import os
 import random
+import typing
 
 import discord.ext.commands
 import Python.BGG
@@ -108,8 +109,8 @@ async def end_time(ctx):
                 brief="Checks user's scores",
                 aliases=['getwins', 'get_wins', 'gw']
                 )
-async def get_all_wins(ctx):
-    response = Python.DataStorage.get_wins(ctx)
+async def get_all_wins(ctx, member: typing.Optional[discord.Member] = None, *, arg=None):
+    response = Python.DataStorage.get_wins(ctx, member, arg)
     await ctx.send('```' + response + '```')
 
 
