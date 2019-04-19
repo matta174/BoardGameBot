@@ -19,27 +19,27 @@ def get_wins(ctx, member, arg):
                       'INNER JOIN games g on wins.game_id = g.id ' +
                       'WHERE discord_id = ' + str(member.id) + ' AND g.name = ' + '\'' + arg + '\'' +
                       ' GROUP BY g.name, discord_id')
-            response = prettify_data(ctx, c)
+            response = prettify_wins_data(ctx, c)
         elif member:
             c.execute('SELECT g.name, discord_id, number_of_wins ' +
                       'FROM wins ' +
                       'INNER JOIN games g on wins.game_id = g.id ' +
                       'WHERE discord_id = ' + str(member.id) +
                       ' GROUP BY g.name, discord_id')
-            response = prettify_data(ctx, c)
+            response = prettify_wins_data(ctx, c)
         elif arg:
             c.execute('SELECT g.name, discord_id, number_of_wins ' +
                       'FROM wins ' +
                       'INNER JOIN games g on wins.game_id = g.id ' +
                       'WHERE g.name = ' + '\'' + arg + '\''
                       'GROUP BY g.name, discord_id')
-            response = prettify_data(ctx, c)
+            response = prettify_wins_data(ctx, c)
         else:
             c.execute('SELECT g.name, discord_id, number_of_wins ' +
-                     'FROM wins ' +
-                     'INNER JOIN games g on wins.game_id = g.id ' +
-                     'GROUP BY g.name, discord_id')
-            response = prettify_data(ctx, c)
+                      'FROM wins ' +
+                      'INNER JOIN games g on wins.game_id = g.id ' +
+                      'GROUP BY g.name, discord_id')
+            response = prettify_wins_data(ctx, c)
 
     except BaseException as e:
             logger.error(e, exc_info=True)
@@ -71,20 +71,21 @@ def add_win_db(ctx, member, arg):
                               'WHERE id = ?',
                               (old_number_of_wins + 1, wins_id,))
                     conn.commit()
-                    return 'Added a win to ' + member.name + ' for ' + arg
+                    response = 'Added a win to ' + member.name + ' for ' + arg
                 else:
                     c.execute("""INSERT INTO wins
                               (discord_id, game_id, number_of_wins)
                               VALUES (?,?,?)""", (member_id, game_id, 1,))
                     conn.commit()
-                return 'Added a win to ' + member.name + ' for ' + arg
+                response = 'Added a win to ' + member.name + ' for ' + arg
         else:
-            return 'No game with the name ' + arg + ' could be found. Please add it first using the !ag command.'
+            response = 'No game with the name ' + arg + ' could be found. Please add it first using the !ag command.'
     except BaseException as e:
         logger.error(e, exc_info=True)
-        return 'Failed to add a win to ' + member.name + ' for ' + arg
+        response = 'Failed to add a win to ' + member.name + ' for ' + arg
     finally:
         conn.close()
+        return response
 
 
 def add_game_db(ctx, name):
@@ -93,15 +94,94 @@ def add_game_db(ctx, name):
         c = conn.cursor()
         c.execute('INSERT INTO games (name) VALUES (?)', (name,))
         conn.commit()
-        return 'Added the game ' + name
+        response = 'Added the game ' + name
     except sqlite3.IntegrityError as e:
         logger.error(e, exc_info=True)
-        return name + ' has already been added.'
+        response = name + ' has already been added.'
     except BaseException as e:
         logger.error(e, exc_info=True)
-        return 'Failed to add game ' + name
+        response = 'Failed to add game ' + name
+    finally:
+        return response
+        conn.close()
+
+
+def add_play_db(ctx, name):
+    try:
+        conn = sqlite3.connect('boardgamebot.db')
+        c = conn.cursor()
+        c.execute('SELECT id ' +
+                  'FROM games ' +
+                  'WHERE name =?', (name,))
+        game_id = c.fetchone()
+        if game_id:
+            game_id = game_id[0]
+            c.execute('SELECT number_of_plays FROM games ' +
+                      'WHERE id = ?', (game_id,))
+            old_number_of_plays = c.fetchone()[0]
+            c.execute('UPDATE games SET (number_of_plays) = ?' +
+                      'WHERE id = ?', (old_number_of_plays + 1, game_id))
+            conn.commit()
+            if old_number_of_plays > 0:
+                response = 'Logged play for \'' + name + '\'. You have played this game ' \
+                           + str(old_number_of_plays + 1) + ' times.'
+            else:
+                response = 'Logged play for \'' + name + '\'. You have played this game one time'
+        else:
+            response = 'No game called \'' + name + '\' was found. Please add it first using the !ag command.'
+    except BaseException as e:
+        logger.error(e, exc_info=True)
+        response = 'Failed to log a play for the game ' + name
     finally:
         conn.close()
+        return response
+
+
+def get_plays_db(ctx, name):
+    if name:
+        try:
+            conn = sqlite3.connect('boardgamebot.db')
+            c = conn.cursor()
+            c.execute('SELECT name, number_of_plays FROM games WHERE name =?', (name,))
+            conn.commit()
+            game_plays = c.fetchone()
+
+            if game_plays:
+                pretty_table = prettytable.PrettyTable()
+                pretty_table.field_names = ['Game', 'Plays']
+                pretty_table.add_row([game_plays[0], str(game_plays[1])])
+
+                response = '```' + pretty_table.get_string() + '```'
+            else:
+                response = 'No game called ' + name + ' was found. Please add it first using the !ag command.'
+
+        except BaseException as e:
+            logger.error(e, exc_info=True)
+            response = 'Failed to retrieve plays for the game ' + name
+        finally:
+            conn.close()
+            return response
+    else:
+        try:
+            conn = sqlite3.connect('boardgamebot.db')
+            c = conn.cursor()
+            c.execute('SELECT name, number_of_plays FROM games')
+            conn.commit()
+            game_plays = c.fetchall()
+
+            pretty_table = prettytable.PrettyTable()
+            pretty_table.field_names = ['Game', 'Plays']
+
+            for game_play in game_plays:
+                pretty_table.add_row([game_play[0], str(game_play[1])])
+
+            response = '```' + pretty_table.get_string() + '```'
+        except BaseException as e:
+            logger.error(e, exc_info=True)
+            response = 'Failed to retrieve plays'
+        finally:
+            conn.close()
+            return response
 
 
 def getStartTime():
@@ -129,7 +209,7 @@ def getEndTime():
     return str(elapsed_time)
 
 
-def prettify_data(ctx, cursor):
+def prettify_wins_data(ctx, cursor):
     rows = cursor
     if rows is None:
         return 'No wins found'
@@ -140,5 +220,5 @@ def prettify_data(ctx, cursor):
         for row in rows:
             pretty_table.add_row([row[0], ctx.guild.get_member(int(row[1])).display_name, row[2]])
 
-        return pretty_table.get_string()
+        return '```' + pretty_table.get_string() + '```'
 
