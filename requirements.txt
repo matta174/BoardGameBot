@@ -7,3 +7,4 @@ pymongo==3.7.2
 dnspython==1.16.0
 youtube_dl==2019.3.18
 Py-StackExchange==2.2.7
+PrettyTable==0.7.2
