@@ -8,8 +8,7 @@ def intitialize_db():
     c.execute("""CREATE TABLE IF NOT EXISTS games (
                 id INTEGER PRIMARY KEY AUTOINCREMENT,
                 name text NOT NULL UNIQUE COLLATE NOCASE,
-                number_of_plays INTEGER DEFAULT 0,
-                total_play_time INTEGER DEFAULT 0
+                number_of_plays INTEGER DEFAULT 0
                 )""")
 
     conn.commit()
