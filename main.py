@@ -111,7 +111,7 @@ async def end_time(ctx):
                 )
 async def get_all_wins(ctx, member: typing.Optional[discord.Member] = None, *, arg=None):
     response = Python.DataStorage.get_wins(ctx, member, arg)
-    await ctx.send('```' + response + '```')
+    await ctx.send(response)
 
 
 @client.command(name='Add_Win',
@@ -131,6 +131,26 @@ async def add_win(ctx, member: discord.Member, *, arg):
                 )
 async def add_game(ctx, *, name):
     response = Python.DataStorage.add_game_db(ctx, name)
+    await ctx.send(response)
+
+
+@client.command(name='Add_Play',
+                description="Logs a play to a game in the database",
+                brief="Logs a play",
+                aliases=['addplay', 'add_play', 'ap'],
+                )
+async def add_play(ctx, *, name):
+    response = Python.DataStorage.add_play_db(ctx, name)
+    await ctx.send(response)
+
+
+@client.command(name='Get_Plays',
+                description="Gets all plays either for one game or for all games",
+                brief="Gets all plays",
+                aliases=['getplays', 'get_plays', 'gp'],
+                )
+async def get_plays_db(ctx, *, name=None):
+    response = Python.DataStorage.get_plays_db(ctx, name)
     await ctx.send(response)
 
 
