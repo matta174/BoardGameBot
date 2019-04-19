@@ -78,30 +78,7 @@ async def what_game_can_we_play(ctx, *, arg):
     name = user_input[0]
     number_of_players = int(user_input[1])
     games_we_can_play = Python.BGG.what_games_can_we_play(name, number_of_players)
-    await ctx.send(games_we_can_play)    
-
-
-@client.command(name='Playtime_Timer',
-                description="Sets the start of a play time timer",
-                brief="Times playtime of a game",
-                aliases=['starttimer', 'timerstart', 'st']
-                )
-async def playtime_timer(ctx):
-    Python.DataStorage.setStartTime()
-    await ctx.send(
-        "Started the timer at: " +
-        str(datetime.datetime.now().strftime("%m/%d/%Y, %H:%M:%S")))
-
-
-@client.command(name='End_Time',
-                description="Checks the elapsed time since the start of the \
-                    timer",
-                brief="Stops the timer",
-                aliases=['endtimer', 'end_time', 'et']
-                )
-async def end_time(ctx):
-    end_time = Python.DataStorage.getEndTime()
-    await ctx.send("Total play time: " + end_time)
+    await ctx.send(games_we_can_play)
 
 
 @client.command(name='Get_All_Wins',
