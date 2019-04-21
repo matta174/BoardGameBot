@@ -6,5 +6,6 @@ psycopg2==2.7.7
 pymongo==3.7.2
 dnspython==1.16.0
 youtube_dl==2019.3.18
+PrettyTable==0.7.2
 Py-StackExchange==2.2.7
 sentry-sdk==0.7.10
