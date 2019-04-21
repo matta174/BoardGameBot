@@ -16,3 +16,6 @@ else:
 
 # Youtube key, same for both environments
 DEVELOPER_KEY = os.environ.get('YOUTUBE_KEY')
+
+# Sentry.io URL
+sentry_url = os.environ.get('SENTRY_URL')
