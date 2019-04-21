@@ -18,7 +18,7 @@ def intitialize_db():
                 game_id INTEGER,
                 number_of_wins INTEGER DEFAULT 0,
                 discord_id text,
-                FOREIGN KEY(game_id) REFERENCES games(game_id)
+                FOREIGN KEY(game_id) REFERENCES games(game_id) 
                 )""")
 
     conn.commit()

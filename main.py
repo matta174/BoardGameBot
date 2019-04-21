@@ -11,11 +11,15 @@ import Python.BGG
 import Python.DataStorage
 import Python.Dice
 import Python.YouTube
+import sentry_sdk
 import util.database_initialization
 from util.config import TOKEN
+from util.config import sentry_url
 
 if not os.path.isfile('boardgamebot.db'):
     util.database_initialization.intitialize_db()
+
+sentry_sdk.init(sentry_url)
 
 logger = logging.Logger('catch_all')
 
