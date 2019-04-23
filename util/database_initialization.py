@@ -7,7 +7,8 @@ def intitialize_db():
 
     c.execute("""CREATE TABLE IF NOT EXISTS games (
                 id INTEGER PRIMARY KEY AUTOINCREMENT,
-                name text NOT NULL UNIQUE COLLATE NOCASE,
+                name text NOT NULL COLLATE NOCASE,
+                server_id text NOT NULL,
                 number_of_plays INTEGER DEFAULT 0
                 )""")
 
@@ -17,8 +18,9 @@ def intitialize_db():
                 id INTEGER PRIMARY KEY AUTOINCREMENT,
                 game_id INTEGER,
                 number_of_wins INTEGER DEFAULT 0,
-                discord_id text,
-                FOREIGN KEY(game_id) REFERENCES games(game_id) 
+                discord_id text NOT NULL,
+                server_id text NOT NULL,
+                FOREIGN KEY(game_id) REFERENCES games(id) 
                 )""")
 
     conn.commit()

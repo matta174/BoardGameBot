@@ -8,7 +8,7 @@ import typing
 
 import discord.ext.commands
 import Python.BGG
-import Python.DataStorage
+import Python.data_storage
 import Python.Dice
 import Python.YouTube
 import sentry_sdk
@@ -91,8 +91,16 @@ async def what_game_can_we_play(ctx, *, arg):
                 aliases=['getwins', 'get_wins', 'gw']
                 )
 async def get_all_wins(ctx, member: typing.Optional[discord.Member] = None, *, arg=None):
-    response = Python.DataStorage.get_wins(ctx, member, arg)
+    response = Python.data_storage.get_wins(ctx, member, arg)
     await ctx.send(response)
+
+
+@get_all_wins.error
+async def get_all_wins_error(ctx, error):
+    if isinstance(error, BaseException):
+        await ctx.send('Unexpected error retrieving wins, try again. If the error persists,'
+                       ' get help here https://discord.gg/9pS2JdC')
+        logger.error(error, exc_info=True)
 
 
 @client.command(name='Add_Win',
@@ -100,9 +108,26 @@ async def get_all_wins(ctx, member: typing.Optional[discord.Member] = None, *, a
                 brief="Adds a win to ther user for a game",
                 aliases=['addwin', 'add_win', 'aw', 'win'],
                 )
-async def add_win(ctx, member: discord.Member, *, arg):
-    response = Python.DataStorage.add_win_db(ctx, member, arg)
+async def add_win(ctx, member: discord.Member, *, game_name):
+    response = Python.data_storage.add_win_db(ctx, member, game_name)
     await ctx.send(response)
+
+
+@add_win.error
+async def add_win_error(ctx, error):
+    if isinstance(error, discord.ext.commands.BadArgument):
+        await ctx.send('Failed to add win. Make sure you are using the format `!aw [user] [boardgame name]`'
+                       ' and that you are mentioning the user directly with @.')
+        logger.error(error, exc_info=True)
+    elif isinstance(error, discord.ext.commands.MissingRequiredArgument):
+        await ctx.send('Failed to add win as you did not provide either the user who won or the name of the game. '
+                       'Make sure you are using the format `!aw [user] [boardgame name]`'
+                       ' and that you are mentioning the user directly with @.')
+        logger.error(error, exc_info=True)
+    elif isinstance(error, BaseException):
+        await ctx.send('Unexpected error adding win, try again. If the error persists,'
+                       ' get help here https://discord.gg/9pS2JdC')
+        logger.error(error, exc_info=True)
 
 
 @client.command(name='Add_Game',
@@ -111,8 +136,14 @@ async def add_win(ctx, member: discord.Member, *, arg):
                 aliases=['addgame', 'add_game', 'ag'],
                 )
 async def add_game(ctx, *, name):
-    response = Python.DataStorage.add_game_db(ctx, name)
+    response = Python.data_storage.add_game_db(ctx, name)
     await ctx.send(response)
+
+@add_game.error
+async def add_game_error(ctx, error):
+    if isinstance(error, BaseException):
+        await ctx.send('Unexpected error adding game, try again. If the error persists,'
+                       ' get help here https://discord.gg/9pS2JdC')
 
 
 @client.command(name='Add_Play',
@@ -121,9 +152,15 @@ async def add_game(ctx, *, name):
                 aliases=['addplay', 'add_play', 'ap'],
                 )
 async def add_play(ctx, *, name):
-    response = Python.DataStorage.add_play_db(ctx, name)
+    response = Python.data_storage.add_play_db(ctx, name)
     await ctx.send(response)
 
+
+@add_play.error
+async def add_play_error(ctx, error):
+    if isinstance(error, BaseException):
+        await ctx.send('Unexpected adding play, try again. If the error persists,'
+                       ' get help here https://discord.gg/9pS2JdC')
 
 @client.command(name='Get_Plays',
                 description="Gets all plays either for one game or for all games",
@@ -131,8 +168,14 @@ async def add_play(ctx, *, name):
                 aliases=['getplays', 'get_plays', 'gp'],
                 )
 async def get_plays_db(ctx, *, name=None):
-    response = Python.DataStorage.get_plays_db(ctx, name)
+    response = Python.data_storage.get_plays_db(ctx, name)
     await ctx.send(response)
+
+@get_plays_db.error
+async def get_plays_db_error(ctx, error):
+    if isinstance(error, BaseException):
+        await ctx.send('Unexpected error retrieving plays, try again. If the error persists,'
+                       ' get help here https://discord.gg/9pS2JdC')
 
 
 @client.command(name='HowToPlay',
@@ -224,19 +267,6 @@ async def game_ambiance_playlist(ctx, *, topic):
 async def next_video(ctx):
     response = Python.YouTube.search_next_video()
     await ctx.send("Next video: \n" + response)
-
-
-# @client.event
-# async def on_command_error(ctx, error):
-#     if isinstance(error, CommandNotFound):
-#         return await ctx.send(ctx.message.channel,
-#                                          '\"' + ctx.invoked_with + '\"'
-#                                          ' is not a valid ' +
-#                                          ' command. Please try again.' +
-#                                          ' Use !help <command name> to get ' +
-#                                          'more info on how to use a ' +
-#                                          'specific command.')
-#         raise error
 
 
 @client.event
