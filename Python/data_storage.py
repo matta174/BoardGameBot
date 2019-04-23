@@ -14,7 +14,9 @@ def get_wins(ctx, member, arg):
             c.execute('SELECT g.name, discord_id, number_of_wins ' +
                       'FROM wins ' +
                       'INNER JOIN games g on wins.game_id = g.id ' +
-                      'WHERE discord_id = ' + str(member.id) + ' AND g.name = ' + '\'' + arg + '\'' +
+                      'WHERE discord_id = ' + str(member.id) +
+                      ' AND g.name = ' + '\'' + arg + '\'' +
+                      ' AND server_id = ' + str(ctx.guild.id) +
                       ' GROUP BY g.name, discord_id')
             response = prettify_wins_data(ctx, c)
         elif member:
@@ -22,25 +24,28 @@ def get_wins(ctx, member, arg):
                       'FROM wins ' +
                       'INNER JOIN games g on wins.game_id = g.id ' +
                       'WHERE discord_id = ' + str(member.id) +
+                      ' AND server_id = ' + str(ctx.guild.id) +
                       ' GROUP BY g.name, discord_id')
             response = prettify_wins_data(ctx, c)
         elif arg:
             c.execute('SELECT g.name, discord_id, number_of_wins ' +
                       'FROM wins ' +
                       'INNER JOIN games g on wins.game_id = g.id ' +
-                      'WHERE g.name = ' + '\'' + arg + '\''
+                      'WHERE g.name = ' + '\'' + arg + '\' ' +
+                      'AND server_id = ' + str(ctx.guild.id) +
                       'GROUP BY g.name, discord_id')
             response = prettify_wins_data(ctx, c)
         else:
             c.execute('SELECT g.name, discord_id, number_of_wins ' +
                       'FROM wins ' +
                       'INNER JOIN games g on wins.game_id = g.id ' +
+                      'WHERE server_id = ' + str(ctx.guild.id) +
                       'GROUP BY g.name, discord_id')
             response = prettify_wins_data(ctx, c)
 
     except BaseException as e:
-            logger.error(e, exc_info=True)
-            response = 'Failed to retrieve wins'
+        logger.error(e, exc_info=True)
+        response = 'Failed to retrieve wins'
     finally:
         conn.close()
         return response
@@ -51,30 +56,31 @@ def add_win_db(ctx, member, arg):
         member_id = str(member.id)
         conn = sqlite3.connect('boardgamebot.db')
         c = conn.cursor()
-        c.execute('SELECT id FROM games WHERE name = \'' + arg + '\'')
+        c.execute('SELECT id FROM games WHERE name = ? AND server_id = ?', (arg, str(ctx.guild.id,)))
         game_id = c.fetchone()
         if game_id:
-                game_id = game_id[0]
-                c.execute('SELECT id ' +
-                          'FROM wins WHERE game_id = ' + str(game_id) +
-                          ' AND discord_id = ' + member_id)
-                wins_id = c.fetchone()
-                if wins_id:
-                    wins_id = wins_id[0]
-                    c.execute('SELECT number_of_wins FROM wins ' +
-                              'WHERE id = ' + str(wins_id))
-                    old_number_of_wins = c.fetchone()[0]
-                    c.execute('UPDATE wins SET number_of_wins = ? ' +
-                              'WHERE id = ?',
-                              (old_number_of_wins + 1, wins_id,))
-                    conn.commit()
-                    response = 'Added a win to ' + member.name + ' for ' + arg
-                else:
-                    c.execute("""INSERT INTO wins
-                              (discord_id, game_id, number_of_wins)
-                              VALUES (?,?,?)""", (member_id, game_id, 1,))
-                    conn.commit()
+            game_id = game_id[0]
+            c.execute('SELECT id ' +
+                      'FROM wins WHERE game_id = ?' +
+                      ' AND server_id = ?' +
+                      ' AND discord_id = ?', (game_id, str(ctx.guild.id), str(member_id),))
+            wins_id = c.fetchone()
+            if wins_id:
+                wins_id = wins_id[0]
+                c.execute('SELECT number_of_wins FROM wins ' +
+                          'WHERE id = ' + str(wins_id))
+                old_number_of_wins = c.fetchone()[0]
+                c.execute('UPDATE wins SET number_of_wins = ? ' +
+                          'WHERE id = ?',
+                          (old_number_of_wins + 1, wins_id,))
+                conn.commit()
                 response = 'Added a win to ' + member.name + ' for ' + arg
+            else:
+                c.execute("""INSERT INTO wins
+                              (discord_id, game_id, number_of_wins, server_id)
+                              VALUES (?,?,?,?)""", (member_id, game_id, 1, str(ctx.guild.id),))
+                conn.commit()
+            response = 'Added a win to ' + member.name + ' for ' + arg
         else:
             response = 'No game with the name ' + arg + ' could be found. Please add it first using the !ag command.'
     except BaseException as e:
@@ -89,7 +95,7 @@ def add_game_db(ctx, name):
     try:
         conn = sqlite3.connect('boardgamebot.db')
         c = conn.cursor()
-        c.execute('INSERT INTO games (name) VALUES (?)', (name,))
+        c.execute('INSERT INTO games (name, server_id) VALUES (?,?)', (name, str(ctx.guild.id),))
         conn.commit()
         response = 'Added the game ' + name
     except sqlite3.IntegrityError as e:
@@ -109,15 +115,15 @@ def add_play_db(ctx, name):
         c = conn.cursor()
         c.execute('SELECT id ' +
                   'FROM games ' +
-                  'WHERE name =?', (name,))
+                  'WHERE name = ? AND server_id = ?', (name, str(ctx.guild.id),))
         game_id = c.fetchone()
         if game_id:
             game_id = game_id[0]
             c.execute('SELECT number_of_plays FROM games ' +
-                      'WHERE id = ?', (game_id,))
+                      'WHERE id = ? AND server_id = ?', (game_id, str(ctx.guild.id),))
             old_number_of_plays = c.fetchone()[0]
             c.execute('UPDATE games SET (number_of_plays) = ?' +
-                      'WHERE id = ?', (old_number_of_plays + 1, game_id))
+                      'WHERE id = ? AND server_id = ?', (old_number_of_plays + 1, game_id, str(ctx.guild.id)))
             conn.commit()
             if old_number_of_plays > 0:
                 response = 'Logged play for \'' + name + '\'. You have played this game ' \
@@ -139,7 +145,7 @@ def get_plays_db(ctx, name):
         try:
             conn = sqlite3.connect('boardgamebot.db')
             c = conn.cursor()
-            c.execute('SELECT name, number_of_plays FROM games WHERE name =?', (name,))
+            c.execute('SELECT name, number_of_plays FROM games WHERE name = ? AND server_id = ?', (name, str(ctx.guild.id),))
             conn.commit()
             game_plays = c.fetchone()
 
@@ -162,7 +168,7 @@ def get_plays_db(ctx, name):
         try:
             conn = sqlite3.connect('boardgamebot.db')
             c = conn.cursor()
-            c.execute('SELECT name, number_of_plays FROM games')
+            c.execute('SELECT name, number_of_plays FROM games WHERE server_id = ?', (str(ctx.guild.id),))
             conn.commit()
             game_plays = c.fetchall()
 
@@ -193,4 +199,3 @@ def prettify_wins_data(ctx, cursor):
             pretty_table.add_row([row[0], ctx.guild.get_member(int(row[1])).display_name, row[2]])
 
         return '```' + pretty_table.get_string() + '```'
-

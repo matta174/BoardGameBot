@@ -8,7 +8,7 @@ import typing
 
 import discord.ext.commands
 import Python.BGG
-import Python.DataStorage
+import Python.data_storage
 import Python.Dice
 import Python.YouTube
 import sentry_sdk
@@ -91,7 +91,7 @@ async def what_game_can_we_play(ctx, *, arg):
                 aliases=['getwins', 'get_wins', 'gw']
                 )
 async def get_all_wins(ctx, member: typing.Optional[discord.Member] = None, *, arg=None):
-    response = Python.DataStorage.get_wins(ctx, member, arg)
+    response = Python.data_storage.get_wins(ctx, member, arg)
     await ctx.send(response)
 
 
@@ -101,7 +101,7 @@ async def get_all_wins(ctx, member: typing.Optional[discord.Member] = None, *, a
                 aliases=['addwin', 'add_win', 'aw', 'win'],
                 )
 async def add_win(ctx, member: discord.Member, *, arg):
-    response = Python.DataStorage.add_win_db(ctx, member, arg)
+    response = Python.data_storage.add_win_db(ctx, member, arg)
     await ctx.send(response)
 
 
@@ -111,7 +111,7 @@ async def add_win(ctx, member: discord.Member, *, arg):
                 aliases=['addgame', 'add_game', 'ag'],
                 )
 async def add_game(ctx, *, name):
-    response = Python.DataStorage.add_game_db(ctx, name)
+    response = Python.data_storage.add_game_db(ctx, name)
     await ctx.send(response)
 
 
@@ -121,7 +121,7 @@ async def add_game(ctx, *, name):
                 aliases=['addplay', 'add_play', 'ap'],
                 )
 async def add_play(ctx, *, name):
-    response = Python.DataStorage.add_play_db(ctx, name)
+    response = Python.data_storage.add_play_db(ctx, name)
     await ctx.send(response)
 
 
@@ -131,7 +131,7 @@ async def add_play(ctx, *, name):
                 aliases=['getplays', 'get_plays', 'gp'],
                 )
 async def get_plays_db(ctx, *, name=None):
-    response = Python.DataStorage.get_plays_db(ctx, name)
+    response = Python.data_storage.get_plays_db(ctx, name)
     await ctx.send(response)
 
 
