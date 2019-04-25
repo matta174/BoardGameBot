@@ -62,7 +62,8 @@ def add_win_db(ctx, member, game_name):
         if wins_id:
             wins_id = wins_id[0]
             c.execute('SELECT number_of_wins FROM wins ' +
-                      'WHERE id = ' + str(wins_id))
+                      'WHERE id = ?', str(wins_id),)
+
             old_number_of_wins = c.fetchone()[0]
             c.execute('UPDATE wins SET number_of_wins = ? ' +
                       'WHERE id = ?',
@@ -87,7 +88,7 @@ def add_game_db(ctx, name):
     c = conn.cursor()
     rows = c.execute('SELECT id FROM games WHERE name = ? AND server_id = ?', (name, str(ctx.guild.id),))
 
-    if len(rows) == 0:
+    if not rows:
         c.execute('INSERT INTO games (name, server_id) VALUES (?,?)', (name, str(ctx.guild.id),))
         conn.commit()
         response = 'Added the game ' + name
@@ -166,7 +167,7 @@ def get_plays_db(ctx, name):
 
 def prettify_wins_data(ctx, cursor):
     rows = cursor.fetchall()
-    if len(rows) == 0:
+    if not rows:
         return 'No wins found.'
     else:
         pretty_table = prettytable.PrettyTable()
