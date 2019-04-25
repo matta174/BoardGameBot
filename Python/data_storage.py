@@ -63,6 +63,7 @@ def add_win_db(ctx, member, game_name):
             wins_id = wins_id[0]
             c.execute('SELECT number_of_wins FROM wins ' +
                       'WHERE id = ?', str(wins_id),)
+
             old_number_of_wins = c.fetchone()[0]
             c.execute('UPDATE wins SET number_of_wins = ? ' +
                       'WHERE id = ?',
