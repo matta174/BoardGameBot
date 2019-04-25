@@ -63,7 +63,6 @@ def add_win_db(ctx, member, game_name):
             wins_id = wins_id[0]
             c.execute('SELECT number_of_wins FROM wins ' +
                       'WHERE id = ?', str(wins_id),)
-
             old_number_of_wins = c.fetchone()[0]
             c.execute('UPDATE wins SET number_of_wins = ? ' +
                       'WHERE id = ?',
@@ -168,7 +167,7 @@ def get_plays_db(ctx, name):
 def prettify_wins_data(ctx, cursor):
     rows = cursor.fetchall()
     if not rows:
-        return 'No wins found.'
+        response = 'No wins found.'
     else:
         pretty_table = prettytable.PrettyTable()
         pretty_table.field_names = ['Game', 'Player', 'Wins']
@@ -176,4 +175,6 @@ def prettify_wins_data(ctx, cursor):
         for row in rows:
             pretty_table.add_row([row[0], ctx.guild.get_member(int(row[1])).display_name, row[2]])
 
-        return '```' + pretty_table.get_string() + '```'
+        response = '```' + pretty_table.get_string() + '```'
+
+    return response
