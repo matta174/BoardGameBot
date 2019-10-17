@@ -2,7 +2,7 @@
 <html lang="en">
   <head>
     <meta charset="utf-8">
-    <title>{{ page.title }}</title>
+    {% comment %} <title>{{ page.title }}</title> {% endcomment %}
     {% if page.description %}<meta name="description" content="{{ page.description }}">{% endif %}
     <meta name="author" content="{{ site.author.name }}">
 
@@ -44,15 +44,12 @@
       <hr>
       <footer>
         <p><small>
-  <!-- start of Karl's footer; modify this part -->
-          <a href="https://creativecommons.org/publicdomain/zero/1.0/"><img src="https://i.creativecommons.org/p/zero/1.0/88x31.png" alt="CC0"/></a> &nbsp;
-          <a href="https://kbroman.org">Karl Broman</a>
-  <!-- end of Karl's footer; modify this part -->
+  <!-- start of  footer; modify this part -->
+
+  <!-- end of footer; modify this part -->
         </small></p>
       </footer>
 
     </div>
-
-    {% include JB/analytics %}
   </body>
 </html>
