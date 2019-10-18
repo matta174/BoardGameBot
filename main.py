@@ -37,7 +37,10 @@ client = discord.ext.commands.Bot(command_prefix=Bot_Prefix)
                 )
 async def bgg_check(ctx, *, gamename):
     main_response = Python.BGG.game_lookup(gamename)
-    await ctx.send(main_response)
+    filepath = Python.BGG.image_lookup(gamename)
+    embed = discord.Embed()
+    embed.set_image(url=filepath)
+    await ctx.send(main_response,embed=embed)
 
 
 @client.command(name='Expansion_Check',

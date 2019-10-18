@@ -9,7 +9,7 @@ so = stackexchange.Site(stackexchange.BoardampCardGames)
 
 def game_lookup(string):
     try:
-        game = bgg.game(string)
+        game = bgg.game(string,choose="best-rank")
     except Exception as e:
             return( "Game not found, are you sure that's the correct title? Check for any possible errors.")    
     heart_count = int(game.rating_average)
@@ -21,6 +21,7 @@ def game_lookup(string):
     empty_heart_count = 10 - heart_count
     for x in range(1, empty_heart_count):
             heart_string += sad_heart_emoji
+    heart_string += " (" + str(int(game.rating_average)) + " / 10)"
 
     description = str(game.description.strip()[0:1000] + "...")
     gamerank = str(game.boardgame_rank)
@@ -34,6 +35,12 @@ def game_lookup(string):
             categories_list + "\nComplexity Rank: " + weight +
             '/5' + "\n\nDescription: " + description)
 
+def image_lookup(string):
+    try:
+        game = bgg.game(string,choose="best-rank")
+    except Exception as e:
+        return( "Game not found, are you sure that's the correct title? Check for any possible errors.") 
+    return(str(game.image))
 
 def game_expansion(string):
     try:
