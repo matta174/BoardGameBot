@@ -39,7 +39,11 @@ async def bgg_check(ctx, *, gamename):
     main_response = Python.BGG.game_lookup(gamename)
     filepath = Python.BGG.image_lookup(gamename)
     embed = discord.Embed()
-    embed.set_image(url=filepath)
+    if  "error" not in filepath:
+        embed.set_image(url=filepath)
+    if filepath == "error":
+        await ctx.send(main_response)
+        return
     await ctx.send(main_response,embed=embed)
 
 

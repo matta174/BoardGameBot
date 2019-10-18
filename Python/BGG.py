@@ -9,17 +9,17 @@ so = stackexchange.Site(stackexchange.BoardampCardGames)
 
 def game_lookup(string):
     try:
-        game = bgg.game(string,choose="best-rank")
+        game = bgg.game(string,choose="first")
     except Exception as e:
             return( "Game not found, are you sure that's the correct title? Check for any possible errors.")    
     heart_count = int(game.rating_average)
     heart_emoji = '\U0001F49A'
     sad_heart_emoji = '\U0001F5A4'
     heart_string = heart_emoji
-    for x in range (0, heart_count):
+    for x in range (1, heart_count):
             heart_string += heart_emoji
     empty_heart_count = 10 - heart_count
-    for x in range(1, empty_heart_count):
+    for x in range(0, empty_heart_count):
             heart_string += sad_heart_emoji
     heart_string += " (" + str(int(game.rating_average)) + " / 10)"
 
@@ -39,7 +39,7 @@ def image_lookup(string):
     try:
         game = bgg.game(string,choose="best-rank")
     except Exception as e:
-        return( "Game not found, are you sure that's the correct title? Check for any possible errors.") 
+        return( "error") 
     return(str(game.image))
 
 def game_expansion(string):
