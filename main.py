@@ -16,8 +16,9 @@ import util.database_initialization
 from util.config import TOKEN
 from util.config import sentry_url
 
-if not os.path.isfile('boardgamebot.db'):
-    util.database_initialization.intitialize_db()
+
+# if not os.path.isfile('boardgamebot.db'):
+#     util.database_initialization.intitialize_db()
 
 sentry_sdk.init(sentry_url)
 
