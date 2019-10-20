@@ -90,8 +90,8 @@ def what_games_can_we_play(name, numberofplayers = 1):
         for item in user.items:
                 if item.owned:
                         if numberofplayers >= item.min_players and numberofplayers <= item.max_players:
-                                gamesString = gamesString + item.name + '\n'
-        return("With "+ str(numberofplayers) + " players you can play these games from " + name + "'s collection\n" + gamesString)
+                                gamesString =  gamesString + item.name + ' - Average Playtime:  ' + str(item.playing_time) + ' minutes ' + '\n\n'
+        return("With "+ str(numberofplayers) + " players you can play these games from " + name + "'s collection \n\n" + gamesString)
 
 
 def hot_games():
