@@ -373,14 +373,15 @@ async def next_video_error(ctx, error):
 async def on_ready():
     print('Ready!')
 
-
 async def list_servers():
     await client.wait_until_ready()
     while not client.is_closed():
         print("Current servers:")
         for guild in client.guilds:
             print(guild.name)
+        await client.change_presence(activity= discord.Game(name=Python.BGG.random_owned_game("matta174")))
         await asyncio.sleep(600)
+        
 
 
 client.loop.create_task(list_servers())
