@@ -4,6 +4,7 @@ import stackexchange
 
 
 bgg = boardgamegeek.BGGClient()
+
 so = stackexchange.Site(stackexchange.BoardampCardGames)
 
 
