@@ -97,11 +97,10 @@ def what_games_can_we_play(name, numberofplayers = 1):
 
 def hot_games():
         hot_games_list = bgg.hot_items('boardgame')
-        returned_string = "The current hot games are: \n"
+        returned_string = "The current hot games are: \n\n"
         for item in hot_games_list:
                 returned_string = returned_string + item.name + '\n'
         return returned_string
-
 
 def hot_companies():
         hot_companies_list = bgg.hot_items('boardgamecompany')
@@ -109,7 +108,6 @@ def hot_companies():
         for item in hot_companies_list:
                 returned_string = returned_string + item.name + '\n'
         return returned_string
-
 
 def search_stackexchange(game_tag, question):
         qs =  so.similar(tagged=game_tag,title=question)
