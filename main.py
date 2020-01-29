@@ -20,7 +20,7 @@ from util.config import sentry_url
 # if not os.path.isfile('boardgamebot.db'):
 #     util.database_initialization.intitialize_db()
 
-sentry_sdk.init(sentry_url)
+# sentry_sdk.init(sentry_url)
 
 logger = logging.Logger('catch_all')
 
@@ -127,99 +127,6 @@ async def what_game_can_we_play_error(ctx, error):
         logger.error(error, exc_info=True)        
 
 
-# @client.command(name='Get_All_Wins',
-#                 description="Gets the wins of every user for every game",
-#                 brief="Checks user's scores",
-#                 aliases=['getwins', 'get_wins', 'gw']
-#                 )
-# async def get_all_wins(ctx, member: typing.Optional[discord.Member] = None, *, arg=None):
-#     response = Python.data_storage.get_wins(ctx, member, arg)
-#     await ctx.send(response)
-
-
-# @get_all_wins.error
-# async def get_all_wins_error(ctx, error):
-#     if isinstance(error, BaseException):
-#         await ctx.send('Unexpected error retrieving wins, try again. If the error persists,'
-#                        ' get help here https://discord.gg/9pS2JdC')
-#         logger.error(error, exc_info=True)
-
-
-# @client.command(name='Add_Win',
-#                 description="Adds a win to the user's total for a game",
-#                 brief="Adds a win to ther user for a game",
-#                 aliases=['addwin', 'add_win', 'aw', 'win'],
-#                 )
-# async def add_win(ctx, member: discord.Member, *, game_name):
-#     response = Python.data_storage.add_win_db(ctx, member, game_name)
-#     await ctx.send(response)
-
-
-# @add_win.error
-# async def add_win_error(ctx, error):
-#     if isinstance(error, discord.ext.commands.BadArgument):
-#         await ctx.send('Failed to add win. Make sure you are using the format `!aw [user] [boardgame name]`'
-#                        ' and that you are mentioning the user directly with @.')
-#         logger.error(error, exc_info=True)
-#     elif isinstance(error, discord.ext.commands.MissingRequiredArgument):
-#         await ctx.send('Failed to add win as you did not provide either the user who won or the name of the game. '
-#                        'Make sure you are using the format `!aw [user] [boardgame name]`'
-#                        ' and that you are mentioning the user directly with @.')
-#         logger.error(error, exc_info=True)
-#     elif isinstance(error, BaseException):
-#         await ctx.send('Unexpected error adding win, try again. If the error persists,'
-#                        ' get help here https://discord.gg/9pS2JdC')
-#         logger.error(error, exc_info=True)
-
-
-# @client.command(name='Add_Game',
-#                 description="Adds a game to the database so wins can be recorded for it",
-#                 brief="Adds a game to the database",
-#                 aliases=['addgame', 'add_game', 'ag'],
-#                 )
-# async def add_game(ctx, *, name):
-#     response = Python.data_storage.add_game_db(ctx, name)
-#     await ctx.send(response)
-
-# @add_game.error
-# async def add_game_error(ctx, error):
-#     if isinstance(error, BaseException):
-#         await ctx.send('Unexpected error adding game, try again. If the error persists,'
-#                        ' get help here https://discord.gg/9pS2JdC')
-
-
-# @client.command(name='Add_Play',
-#                 description="Logs a play to a game in the database",
-#                 brief="Logs a play",
-#                 aliases=['addplay', 'add_play', 'ap'],
-#                 )
-# async def add_play(ctx, *, name):
-#     response = Python.data_storage.add_play_db(ctx, name)
-#     await ctx.send(response)
-
-
-# @add_play.error
-# async def add_play_error(ctx, error):
-#     if isinstance(error, BaseException):
-#         await ctx.send('Unexpected adding play, try again. If the error persists,'
-#                        ' get help here https://discord.gg/9pS2JdC')
-
-# @client.command(name='Get_Plays',
-#                 description="Gets all plays either for one game or for all games",
-#                 brief="Gets all plays",
-#                 aliases=['getplays', 'get_plays', 'gp'],
-#                 )
-# async def get_plays_db(ctx, *, name=None):
-#     response = Python.data_storage.get_plays_db(ctx, name)
-#     await ctx.send(response)
-
-# @get_plays_db.error
-# async def get_plays_db_error(ctx, error):
-#     if isinstance(error, BaseException):
-#         await ctx.send('Unexpected error retrieving plays, try again. If the error persists,'
-#                        ' get help here https://discord.gg/9pS2JdC')
-
-
 @client.command(name='HowToPlay',
                 description="Returns the top search result video from YouTube \
                     on how to play",
@@ -248,7 +155,7 @@ async def schedule(ctx):
 @client.command(name='GetHotGames',
                 description="Returns BoardGameGeeks current hot games",
                 brief="Returns BoardGameGeeks current hot games",
-                aliases=['ghg', 'gethotgames']
+                aliases=['ghg', 'gethotgames','hot']
                 )
 async def get_hot_games(ctx):
     response = Python.BGG.hot_games()
