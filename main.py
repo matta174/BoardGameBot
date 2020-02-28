@@ -117,6 +117,10 @@ async def what_game_can_we_play(ctx, *, arg):
     name = user_input[0]
     number_of_players = int(user_input[1])
     games_we_can_play = Python.BGG.what_games_can_we_play(name, number_of_players)
+    if games_we_can_play.__len__() > 2000:
+        for chunk in [games_we_can_play[i:i + 2000] for i in range(0, len(games_we_can_play), 2000)]:
+            await ctx.send(chunk + '\n')
+        return
     await ctx.send(games_we_can_play)
 
 @what_game_can_we_play.error
