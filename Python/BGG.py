@@ -135,3 +135,4 @@ def search_stackexchange(game_tag, question):
         returned_string = 'No similar questions have been found on https://boardgames.stackexchange.com/'
 
     return returned_string
+
