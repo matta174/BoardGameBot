@@ -116,3 +116,4 @@ boardgamebot.db
 
 #Misc IDE stuff
 .idea/
+boardgamebot.env
