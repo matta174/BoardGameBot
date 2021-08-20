@@ -60,4 +60,3 @@ Google APIs Client Library for Python - [link](https://developers.google.com/api
 
 Hey! Buy us a  :beers:!
 
-[![Beerpay](https://beerpay.io/matta174/BoardGameBot/badge.svg?style=beer-square)](https://beerpay.io/matta174/BoardGameBot)  [![Beerpay](https://beerpay.io/matta174/BoardGameBot/make-wish.svg?style=flat-square)](https://beerpay.io/matta174/BoardGameBot?focus=wish)
