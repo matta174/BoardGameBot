@@ -1,8 +1,7 @@
 # BoardGameBot
 
 This is the repository for a board game Discord bot
-
-[![star this repo](http://githubbadges.com/star.svg?user=matta174&repo=BoardGameBot&style=default)](https://github.com/matta174/BoardGameBot)   [![fork this repo](http://githubbadges.com/fork.svg?user=matta174&repo=BoardGameBot&style=default)](https://github.com/matta174/BoardGameBot/fork)  [![Python 3.6.7](https://img.shields.io/badge/python-3.6.7-blue.svg)](https://www.python.org/downloads/release/python-360/)  ![GitHub repo size](https://img.shields.io/github/repo-size/matta174/boardgamebot.svg)    ![Discord](https://img.shields.io/discord/288694246721191947.svg)   ![GitHub issues](https://img.shields.io/github/issues-raw/matta174/boardgamebot.svg)
+ [![Python 3.6.7](https://img.shields.io/badge/python-3.6.7-blue.svg)](https://www.python.org/downloads/release/python-360/)  ![GitHub repo size](https://img.shields.io/github/repo-size/matta174/boardgamebot.svg)    ![Discord](https://img.shields.io/discord/288694246721191947.svg)   ![GitHub issues](https://img.shields.io/github/issues-raw/matta174/boardgamebot.svg)
 [![CodeFactor](https://www.codefactor.io/repository/github/matta174/boardgamebot/badge)](https://www.codefactor.io/repository/github/matta174/boardgamebot)
 
 BoardGameBot is a bot that can be used to quickly lookup information about board games as well as get how to play videos and much more.
@@ -56,7 +55,4 @@ Google APIs Client Library for Python - [link](https://developers.google.com/api
 | Get Hot Games | Returns BoardGameGeeks current hot games | !ghg |
 | Get Hot Companies | Returns BoardGameGeeks current hot board game companies | !ghc |
 
-## Support the project on Beerpay
-
-Hey! Buy us a  :beers:!
 
