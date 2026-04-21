@@ -1,7 +1,7 @@
 discord.py==1.4.1
 boardgamegeek2==1.0.1
 google-api-python-client==1.7.8
-python-dotenv==0.10.1
+python-dotenv==1.2.2
 dnspython==2.6.1
 youtube_dl==2019.3.18
 PrettyTable==0.7.2
